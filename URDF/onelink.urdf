@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<robot name="one_link">
+    <link name="world"/>
+    <link name="x"/> <!-- link 0    -->
+    <link name="y"/> <!-- link 1    -->
+    <link name="z"/> <!-- link 2    -->
+    <link name="slider">
+        <visual>
+          <geometry>
+            <capsule length="0.2" radius="0.01"/>
+          </geometry>
+          <material name="slider_color">
+            <color rgba="1 0 0 1"/>
+          </material>
+        </visual>
+        <collision>
+          <geometry>
+            <capsule length="0.2" radius="0.01"/>
+          </geometry>
+        </collision>
+        <inertial>
+          <mass value=" 1"/>
+          <inertia ixx="0.01" ixy="0.0" ixz="0.0" iyy="0.01" iyz="0.0" izz="0.01"/>
+        </inertial>
+    </link> <!-- link 3 (a fixed link on 2 and 3 so they have the same position/orientation)    -->
+
+    <joint name="x_direction" type="prismatic">
+        <parent link="world"/>
+        <child link="x"/>
+        <axis xyz="1 0 0"/>
+        <origin rpy="0 0 0" xyz="0 0 0"/>
+        <limit effort="1000.0" lower="-10" upper="10" velocity="0.01" />
+    </joint>
+    <joint name="y_direction" type="prismatic">
+        <parent link="x"/>
+        <child link="y"/>
+        <axis xyz="0 1 0"/>
+        <origin rpy="0 0 0" xyz="0 0 0"/>
+        <limit effort="1000.0" lower="-10" upper="10" velocity="0.01" />
+    </joint>
+    <joint name="z_direction" type="prismatic">
+        <parent link="y"/>
+        <child link="z"/>
+        <axis xyz="0 0 1"/>
+        <origin rpy="0 0 0" xyz="0 0 0"/>
+        <limit effort="1000.0" lower="-10" upper="10" velocity="0.01" />
+    </joint>
+    <joint name="to_node" type="fixed">
+        <parent link="z"/>
+        <child link="slider"/>
+        <origin rpy="1.57 2 0" xyz="0 0 0"/>
+    </joint>
+</robot>
