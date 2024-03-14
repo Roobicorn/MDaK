@@ -13,8 +13,7 @@
     <color rgba="1 1 1 1"/>
   </material>
 
-  <link name="world">
-  </link>
+
 
   <link name="base_link">
     <visual>
@@ -29,13 +28,16 @@
       </geometry>
     </collision>
   </link>
+<!--
+  <link name="world">
+  </link>
 
   <joint name="base_world_fix" type="fixed">
     <parent link="world"/>
     <child link="base_link"/>
     <origin xyz="0 0 0.5"/>
   </joint>
-
+-->
   <link name="right_leg">
     <visual>
       <geometry>
@@ -210,7 +212,7 @@
     <parent link="base_link"/>
     <child link="gripper_pole"/>
     <limit effort="1000.0" lower="-0.38" upper="0" velocity="0.5"/>
-    <axis xyz="0 1 0"/>
+    <axis xyz="1 0 0"/>
     <origin rpy="0 0 0" xyz="0.19 0 0.2"/>
   </joint>
 

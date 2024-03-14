@@ -72,7 +72,7 @@
       <origin xyz="0 0 0.07"/>
     </collision>
   </link>
-  <joint name="arm_link_1a_to_base" type="revolute">
+  <joint name="arm_link_1a_to_base_cyl" type="revolute">
     <parent link="base_cyl"/>
     <child link="arm_link_1a"/>
     <origin xyz="0 0 0.033"/>
@@ -95,7 +95,7 @@
       <origin xyz="0 -0.03 0" rpy="1.570796 0 0"/>
     </collision>
   </link>
-  <joint name="arm_link_1a_to_1b" type="fixed">
+  <joint name="arm_link_1b_to_1a" type="fixed">
     <parent link="arm_link_1a"/>
     <child link="arm_link_1b"/>
     <origin xyz="0 0 0.2"/>
@@ -114,11 +114,182 @@
       </geometry>
     </collision>
   </link>
-  <joint name="arm_link_1b_to_1c" type="fixed">
+  <joint name="arm_link_1c_to_1b" type="fixed">
     <parent link="arm_link_1b"/>
     <child link="arm_link_1c"/>
     <origin xyz="0 -0.06 0"/>
   </joint>
+
+
+  <link name="arm_link_2b">
+    <visual>
+      <geometry>
+        <cylinder length="0.06" radius="0.06"/>
+      </geometry>
+      <origin xyz="0 0.03 0" rpy="-1.570796 0 0"/>
+      <material name="white"/>
+    </visual>
+    <collision>
+      <geometry>
+        <cylinder length="0.06" radius="0.06"/>
+      </geometry>
+      <origin xyz="0 0.03 0" rpy="-1.570796 0 0"/>
+    </collision>
+  </link>
+  <joint name="arm_link_2b_to_1b" type="revolute">
+    <parent link="arm_link_1b"/>
+    <child link="arm_link_2b"/>
+    <origin xyz="0 0 0"/>
+    <axis xyz="0 1 0"/>
+    <limit effort="1000.0" lower="-1.832596" upper="1.832596" velocity="2.617994"/>
+  </joint>
+
+  <link name="arm_link_2c">
+    <visual>
+      <geometry>
+        <sphere radius="0.06"/>
+      </geometry>
+      <material name="white"/>
+    </visual>
+    <collision>
+      <geometry>
+        <sphere radius="0.06"/>
+      </geometry>
+    </collision>
+  </link>
+  <joint name="arm_link_2c_to_2b" type="fixed">
+    <parent link="arm_link_2b"/>
+    <child link="arm_link_2c"/>
+    <origin xyz="0 0.06 0"/>
+  </joint>
+
+  <link name="arm_link_2a">
+    <visual>
+      <geometry>
+        <cylinder length="0.14" radius="0.06"/>
+      </geometry>
+      <origin xyz="0 0 0.07"/>
+      <material name="white"/>
+    </visual>
+    <collision>
+      <geometry>
+        <cylinder length="0.14" radius="0.06"/>
+      </geometry>
+      <origin xyz="0 0 0.07"/>
+    </collision>
+  </link>
+  <joint name="arm_link_2a_to_2b" type="fixed">
+    <parent link="arm_link_2b"/>
+    <child link="arm_link_2a"/>
+    <origin xyz="0 0 0.06"/>
+  </joint>
+
+
+  <link name="arm_link_3a">
+    <visual>
+      <geometry>
+        <cylinder length="0.05" radius="0.06"/>
+      </geometry>
+      <origin xyz="0 0 0.025"/>
+      <material name="white"/>
+    </visual>
+    <collision>
+      <geometry>
+        <cylinder length="0.05" radius="0.06"/>
+      </geometry>
+      <origin xyz="0 0 0.025"/>
+    </collision>
+  </link>
+  <joint name="arm_link_3a_to_2a" type="revolute">
+    <parent link="arm_link_2a"/>
+    <child link="arm_link_3a"/>
+    <origin xyz="0 0 0.14"/>
+    <axis xyz="0 0 1"/>
+    <limit effort="1000.0" lower="-2.897247" upper="2.897247" velocity="2.617994"/>
+  </joint>
+
+  <link name="arm_link_3c">
+    <visual>
+      <geometry>
+        <sphere radius="0.06"/>
+      </geometry>
+      <material name="white"/>
+    </visual>
+    <collision>
+      <geometry>
+        <sphere radius="0.06"/>
+      </geometry>
+    </collision>
+  </link>
+  <joint name="arm_link_3c_to_3a" type="fixed">
+    <parent link="arm_link_3a"/>
+    <child link="arm_link_3c"/>
+    <origin xyz="0 0 0.06"/>
+  </joint>
+
+  <link name="arm_link_3b">
+    <visual>
+      <geometry>
+        <cylinder length="0.06" radius="0.06"/>
+      </geometry>
+      <origin xyz="0 0.03 0" rpy="-1.570796 0 0"/>
+      <material name="white"/>
+    </visual>
+    <collision>
+      <geometry>
+        <cylinder length="0.06" radius="0.06"/>
+      </geometry>
+      <origin xyz="0 0.03 0" rpy="-1.570796 0 0"/>
+    </collision>
+  </link>
+  <joint name="arm_link_3b_to_3a" type="fixed">
+    <parent link="arm_link_3a"/>
+    <child link="arm_link_3b"/>
+    <origin xyz="0.082 0 0.116"/>
+  </joint>
+
+  <link name="arm_link_3d">
+    <visual>
+      <geometry>
+        <cylinder radius="0.06" length="0.02"/>
+      </geometry>
+      <origin xyz="0 0.01 0" rpy="1.570796 0 0"/>
+      <material name="black"/>
+    </visual>
+    <collision>
+      <geometry>
+        <cylinder radius="0.06" length="0.02"/>
+      </geometry>
+      <origin xyz="0 0.01 0" rpy="1.570796 0 0"/>
+    </collision>
+  </link>
+  <joint name="arm_link_3d_to_3b" type="fixed">
+    <parent link="arm_link_3b"/>
+    <child link="arm_link_3d"/>
+    <origin xyz="0 0.06 0"/>
+  </joint>
+
+  <link name="arm_link_3e">
+    <visual>
+      <geometry>
+        <sphere radius="0.05"/>
+      </geometry>
+      <material name="white"/>
+    </visual>
+    <collision>
+      <geometry>
+        <sphere radius="0.05"/>
+      </geometry>
+    </collision>
+  </link>
+  <joint name="arm_link_3e_to_3b" type="fixed">
+    <parent link="arm_link_3b"/>
+    <child link="arm_link_3e"/>
+    <origin xyz="0 0.06 0"/>
+  </joint>
+
+
+
 
 
 
