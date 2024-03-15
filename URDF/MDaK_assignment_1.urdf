@@ -8,6 +8,14 @@
     <color rgba="0 0 0.8 1"/>
   </material>
 
+  <material name="blue_clear">
+    <color rgba="0 0 0.8 0.5"/>
+  </material>
+
+  <material name="red_clear">
+    <color rgba="0.8 0 0 0.5"/>
+  </material>
+
   <material name="white">
     <color rgba="1 1 1 1"/>
   </material>
@@ -233,7 +241,7 @@
         <cylinder length="0.06" radius="0.06"/>
       </geometry>
       <origin xyz="0 0.03 0" rpy="-1.570796 0 0"/>
-      <material name="white"/>
+      <material name="blue_clear"/>
     </visual>
     <collision>
       <geometry>
@@ -288,6 +296,72 @@
     <origin xyz="0 0.06 0"/>
   </joint>
 
+  <link name="arm_link_4b">
+    <visual>
+      <geometry>
+        <cylinder length="0.06" radius="0.06"/>
+      </geometry>
+      <origin xyz="0 -0.03 0" rpy="1.570796 0 0"/>
+      <material name="red_clear"/>
+    </visual>
+    <collision>
+      <geometry>
+        <cylinder length="0.06" radius="0.06"/>
+      </geometry>
+      <origin xyz="0 -0.03 0" rpy="1.570796 0 0"/>
+    </collision>
+  </link>
+  <joint name="arm_link_4b_to_3b" type="revolute">
+    <parent link="arm_link_3b"/>
+    <child link="arm_link_4b"/>
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+    <axis xyz="0 1 0"/>
+    <!--limit effort="1000.0" lower="-0.122173" upper="-3.071779" velocity="2.617994"/>
+    (already set at -90) -->
+    <limit effort="1000.0" lower="-1.448623" upper="1.500983" velocity="2.617994"/>
+  </joint>
+
+  <link name="arm_link_4a">
+    <visual>
+      <geometry>
+        <cylinder length="0.05" radius="0.06"/>
+      </geometry>
+      <origin xyz="-0.025 0 0" rpy="0 -1.570796 0"/>
+      <material name="white"/>
+    </visual>
+    <collision>
+      <geometry>
+        <cylinder length="0.05" radius="0.06"/>
+      </geometry>
+      <origin xyz="-0.025 0 0" rpy="0 -1.570796 0"/>
+    </collision>
+  </link>
+  <joint name="arm_link_4a_to_4b" type="fixed">
+    <parent link="arm_link_4b"/>
+    <child link="arm_link_4a"/>
+    <origin xyz="0.116 0 0.082" rpy="0 0 0"/>
+  </joint>
+
+  <link name="arm_link_4c">
+    <visual>
+      <geometry>
+        <sphere radius="0.06"/>
+      </geometry>
+      <material name="white"/>
+    </visual>
+    <collision>
+      <geometry>
+        <sphere radius="0.06"/>
+      </geometry>
+    </collision>
+  </link>
+  <joint name="arm_link_4c_to_4a" type="fixed">
+    <parent link="arm_link_4a"/>
+    <child link="arm_link_4c"/>
+    <origin xyz="-0.06 0 0"/>
+  </joint>
+
+  <!-- TO DO: Make 4d & 4e (styling) and arms and joints 5-7 -->
 
 
 
