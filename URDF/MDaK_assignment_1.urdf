@@ -497,10 +497,48 @@
     <origin xyz="0.268 0 0" rpy="0 0 0"/>
   </joint>
 
+  <link name="arm_link_6b">
+    <visual>
+      <geometry>
+        <cylinder length="0.06" radius="0.06"/>
+      </geometry>
+      <origin xyz="0 -0.03 0" rpy="1.570796 0 0"/>
+      <material name="link_col_3"/>
+    </visual>
+    <collision>
+      <geometry>
+        <cylinder length="0.06" radius="0.06"/>
+      </geometry>
+      <origin xyz="0 -0.03 0" rpy="1.570796 0 0"/>
+    </collision>
+  </link>
+  <joint name="arm_link_6b_to_5b" type="revolute">
+    <parent link="arm_link_5b"/>
+    <child link="arm_link_6b"/>
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+    <axis xyz="0 1 0"/>
+    <limit effort="1000.0" lower="-1.134464" upper="3.054326" velocity="5.253441"/>
+  </joint>
 
+  <link name="arm_link_6a">
+    <visual>
+      <geometry>
+        <cylinder length="0.12" radius="0.06"/>
+      </geometry>
+      <origin xyz="0 -0.03 0" rpy="0 0 0"/>
+      <material name="link_col_3"/>
+    </visual>
+    <collision>
+      <geometry>
+        <cylinder length="0.12" radius="0.06"/>
+      </geometry>
+      <origin xyz="0 -0.03 0" rpy="0 0 0"/>
+    </collision>
+  </link>
+  <joint name="arm_link_6a_to_6b" type="fixed">
 
+  </joint>
 
-
-  <!-- TO DO: Make 4d & 4e (styling) and arms and joints 5-7 -->
+  <!-- TO DO: Finish link 6, Make joint 7 -->
 
 </robot>
