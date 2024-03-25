@@ -208,16 +208,16 @@
   <link name="arm_link_3a">
     <visual>
       <geometry>
-        <cylinder length="0.05" radius="0.06"/>
+        <cylinder length="0.06" radius="0.06"/>
       </geometry>
-      <origin xyz="0 0 0.025"/>
+      <origin xyz="0 0 0.03"/>
       <material name="link_col_3"/>
     </visual>
     <collision>
       <geometry>
-        <cylinder length="0.05" radius="0.06"/>
+        <cylinder length="0.06" radius="0.06"/>
       </geometry>
-      <origin xyz="0 0 0.025"/>
+      <origin xyz="0 0 0.03"/>
     </collision>
   </link>
   <joint name="arm_link_3a_to_2a" type="revolute">
@@ -336,16 +336,16 @@
   <link name="arm_link_4a">
     <visual>
       <geometry>
-        <cylinder length="0.05" radius="0.06"/>
+        <cylinder length="0.06" radius="0.06"/>
       </geometry>
-      <origin xyz="-0.025 0 0" rpy="0 -1.570796 0"/>
+      <origin xyz="-0.03 0 0" rpy="0 -1.570796 0"/>
       <material name="link_col_1"/>
     </visual>
     <collision>
       <geometry>
-        <cylinder length="0.05" radius="0.06"/>
+        <cylinder length="0.06" radius="0.06"/>
       </geometry>
-      <origin xyz="-0.025 0 0" rpy="0 -1.570796 0"/>
+      <origin xyz="-0.03 0 0" rpy="0 -1.570796 0"/>
     </collision>
   </link>
   <joint name="arm_link_4a_to_4b" type="fixed">
@@ -416,16 +416,16 @@
   <link name="arm_link_5a">
     <visual>
       <geometry>
-        <cylinder length="0.208" radius="0.06"/>
+        <cylinder length="0.06" radius="0.06"/>
       </geometry>
-      <origin xyz="0.104 0 0" rpy="0 -1.570796 0"/>
+      <origin xyz="0.03 0 0" rpy="0 -1.570796 0"/>
       <material name="link_col_2"/>
     </visual>
     <collision>
       <geometry>
-        <cylinder length="0.208" radius="0.06"/>
+        <cylinder length="0.06" radius="0.06"/>
       </geometry>
-      <origin xyz="0.104 0 0" rpy="0 -1.570796 0"/>
+      <origin xyz="0.03 0 0" rpy="0 -1.570796 0"/>
     </collision>
   </link>
   <joint name="arm_link_5a_to_4a" type="revolute">
@@ -436,6 +436,46 @@
     <limit effort="1000.0" lower="-2.879793" upper="2.879793" velocity="5.253441"/>
   </joint>
 
+  <link name="arm_link_5c">
+    <visual>
+      <geometry>
+        <sphere radius="0.06"/>
+      </geometry>
+      <material name="link_col_2"/>
+    </visual>
+    <collision>
+      <geometry>
+        <sphere radius="0.06"/>
+      </geometry>
+    </collision>
+  </link>
+  <joint name="arm_link_5c_to_5a" type="fixed">
+    <parent link="arm_link_5a"/>
+    <child link="arm_link_5c"/>
+    <origin xyz="0.06 0 0"/>
+  </joint>
+
+  <link name="arm_link_5d">
+    <visual>
+      <geometry>
+        <cylinder radius="0.03" length="0.168"/>
+      </geometry>
+      <origin xyz="0.084 0.03 0" rpy="0 -1.570796 0"/>
+      <material name="link_col_2"/>
+    </visual>
+    <collision>
+      <geometry>
+        <cylinder radius="0.03" length="0.168"/>
+      </geometry>
+      <origin xyz="0.084 0.03 0" rpy="0 -1.570796 0"/>
+    </collision>
+  </link>
+  <joint name="arm_link_5d_to_5a" type="fixed">
+    <parent link="arm_link_5a"/>
+    <child link="arm_link_5d"/>
+    <origin xyz="0.06 0 0" rpy="0 0 0"/>
+  </joint>
+
   <link name="arm_link_5b">
     <visual>
       <geometry>
@@ -444,12 +484,20 @@
       <origin xyz="0 0.03 0" rpy="1.570796 0 0"/>
       <material name="link_col_2"/>
     </visual>
+    <collision>
+      <geometry>
+        <cylinder radius="0.06" length="0.06"/>
+      </geometry>
+      <origin xyz="0 0.03 0" rpy="1.570796 0 0"/>
+    </collision>
   </link>
   <joint name="arm_link_5b_to_5a" type="fixed">
     <parent link="arm_link_5a"/>
     <child link="arm_link_5b"/>
     <origin xyz="0.268 0 0" rpy="0 0 0"/>
   </joint>
+
+
 
 
 
