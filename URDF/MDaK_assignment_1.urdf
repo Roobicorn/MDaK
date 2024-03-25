@@ -20,6 +20,18 @@
     <color rgba="1 1 1 1"/>
   </material>
 
+  <material name="link_col_1">
+    <color rgba="0.8 0 0 .8"/>
+  </material>
+
+  <material name="link_col_2">
+    <color rgba="0 0.8 0 .8"/>
+  </material>
+
+  <material name="link_col_3">
+    <color rgba="0 0 0.8 .8"/>
+  </material>
+
   <link name="world">
   </link>
 
@@ -71,7 +83,7 @@
         <cylinder length="0.14" radius="0.06"/>
       </geometry>
       <origin xyz="0 0 0.07"/>
-      <material name="white"/>
+      <material name="link_col_1"/>
     </visual>
     <collision>
       <geometry>
@@ -94,7 +106,7 @@
         <cylinder length="0.06" radius="0.06"/>
       </geometry>
       <origin xyz="0 -0.03 0" rpy="1.570796 0 0"/>
-      <material name="white"/>
+      <material name="link_col_1"/>
     </visual>
     <collision>
       <geometry>
@@ -114,7 +126,7 @@
       <geometry>
         <sphere radius="0.06"/>
       </geometry>
-      <material name="white"/>
+      <material name="link_col_1"/>
     </visual>
     <collision>
       <geometry>
@@ -135,7 +147,7 @@
         <cylinder length="0.06" radius="0.06"/>
       </geometry>
       <origin xyz="0 0.03 0" rpy="-1.570796 0 0"/>
-      <material name="white"/>
+      <material name="link_col_2"/>
     </visual>
     <collision>
       <geometry>
@@ -157,7 +169,7 @@
       <geometry>
         <sphere radius="0.06"/>
       </geometry>
-      <material name="white"/>
+      <material name="link_col_2"/>
     </visual>
     <collision>
       <geometry>
@@ -177,7 +189,7 @@
         <cylinder length="0.14" radius="0.06"/>
       </geometry>
       <origin xyz="0 0 0.07"/>
-      <material name="white"/>
+      <material name="link_col_2"/>
     </visual>
     <collision>
       <geometry>
@@ -199,7 +211,7 @@
         <cylinder length="0.05" radius="0.06"/>
       </geometry>
       <origin xyz="0 0 0.025"/>
-      <material name="white"/>
+      <material name="link_col_3"/>
     </visual>
     <collision>
       <geometry>
@@ -221,7 +233,7 @@
       <geometry>
         <sphere radius="0.06"/>
       </geometry>
-      <material name="white"/>
+      <material name="link_col_3"/>
     </visual>
     <collision>
       <geometry>
@@ -241,7 +253,7 @@
         <cylinder length="0.06" radius="0.06"/>
       </geometry>
       <origin xyz="0 0.03 0" rpy="-1.570796 0 0"/>
-      <material name="blue_clear"/>
+      <material name="link_col_3"/>
     </visual>
     <collision>
       <geometry>
@@ -282,7 +294,7 @@
       <geometry>
         <sphere radius="0.05"/>
       </geometry>
-      <material name="white"/>
+      <material name="link_col_3"/>
     </visual>
     <collision>
       <geometry>
@@ -302,7 +314,7 @@
         <cylinder length="0.06" radius="0.06"/>
       </geometry>
       <origin xyz="0 -0.03 0" rpy="1.570796 0 0"/>
-      <material name="red_clear"/>
+      <material name="link_col_1"/>
     </visual>
     <collision>
       <geometry>
@@ -327,7 +339,7 @@
         <cylinder length="0.05" radius="0.06"/>
       </geometry>
       <origin xyz="-0.025 0 0" rpy="0 -1.570796 0"/>
-      <material name="white"/>
+      <material name="link_col_1"/>
     </visual>
     <collision>
       <geometry>
@@ -347,7 +359,7 @@
       <geometry>
         <sphere radius="0.06"/>
       </geometry>
-      <material name="white"/>
+      <material name="link_col_1"/>
     </visual>
     <collision>
       <geometry>
@@ -361,352 +373,86 @@
     <origin xyz="-0.06 0 0"/>
   </joint>
 
+  <link name="arm_link_4d">
+    <visual>
+      <geometry>
+        <cylinder radius="0.06" length="0.02"/>
+      </geometry>
+      <origin xyz="0 -0.01 0" rpy="1.570796 0 0"/>
+      <material name="black"/>
+    </visual>
+    <collision>
+      <geometry>
+        <cylinder radius="0.06" length="0.02"/>
+      </geometry>
+      <origin xyz="0 -0.01 0" rpy="1.570796 0 0"/>
+    </collision>
+  </link>
+  <joint name="arm_link_4d_to_4b" type="fixed">
+    <parent link="arm_link_4b"/>
+    <child link="arm_link_4d"/>
+    <origin xyz="0 -0.06 0"/>
+  </joint>
+
+  <link name="arm_link_4e">
+    <visual>
+      <geometry>
+        <sphere radius="0.05"/>
+      </geometry>
+      <material name="link_col_1"/>
+    </visual>
+    <collision>
+      <geometry>
+        <sphere radius="0.05"/>
+      </geometry>
+    </collision>
+  </link>
+  <joint name="arm_link_4e_to_4b" type="fixed">
+    <parent link="arm_link_4b"/>
+    <child link="arm_link_4e"/>
+    <origin xyz="0 -0.06 0"/>
+  </joint>
+
+  <link name="arm_link_5a">
+    <visual>
+      <geometry>
+        <cylinder length="0.208" radius="0.06"/>
+      </geometry>
+      <origin xyz="0.104 0 0" rpy="0 -1.570796 0"/>
+      <material name="link_col_2"/>
+    </visual>
+    <collision>
+      <geometry>
+        <cylinder length="0.208" radius="0.06"/>
+      </geometry>
+      <origin xyz="0.104 0 0" rpy="0 -1.570796 0"/>
+    </collision>
+  </link>
+  <joint name="arm_link_5a_to_4a" type="revolute">
+    <parent link="arm_link_4a"/>
+    <child link="arm_link_5a"/>
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+    <axis xyz="1 0 0"/>
+    <limit effort="1000.0" lower="-2.879793" upper="2.879793" velocity="5.253441"/>
+  </joint>
+
+  <link name="arm_link_5b">
+    <visual>
+      <geometry>
+        <cylinder radius="0.06" length="0.06"/>
+      </geometry>
+      <origin xyz="0 0.03 0" rpy="1.570796 0 0"/>
+      <material name="link_col_2"/>
+    </visual>
+  </link>
+  <joint name="arm_link_5b_to_5a" type="fixed">
+    <parent link="arm_link_5a"/>
+    <child link="arm_link_5b"/>
+    <origin xyz="0.268 0 0" rpy="0 0 0"/>
+  </joint>
+
+
+
   <!-- TO DO: Make 4d & 4e (styling) and arms and joints 5-7 -->
 
-
-
-
-
-
-
-  <!--
-
-
-    <link name="base_link">
-      <visual>
-        <geometry>
-          <cylinder length="0.6" radius="0.2"/>
-        </geometry>
-        <material name="blue"/>
-      </visual>
-      <collision>
-        <geometry>
-          <cylinder length="0.6" radius="0.2"/>
-        </geometry>
-      </collision>
-    </link>
-
-    <joint name="base_world_fix" type="fixed">
-      <parent link="world"/>
-      <child link="base_link"/>
-      <origin xyz="0 0 0.5"/>
-    </joint>
-
-    <link name="right_leg">
-      <visual>
-        <geometry>
-          <box size ="0.6 0.1 0.2"/>
-        </geometry>
-        <origin xyz="0 0 -0.3" rpy="0 1.57075 0"/>
-        <material name="white"/>
-      </visual>
-      <collision>
-        <geometry>
-          <box size ="0.6 0.1 0.2"/>
-        </geometry>
-      </collision>
-    </link>
-
-    <joint name="base_to_right_leg" type="fixed">
-      <parent link="base_link"/>
-      <child link="right_leg"/>
-      <origin xyz="0 -0.22 0.25"/>
-    </joint>
-
-    <link name="right_base">
-      <visual>
-        <geometry>
-          <box size="0.4 0.1 0.1"/>
-        </geometry>
-        <material name="white"/>
-      </visual>
-      <collision>
-        <geometry>
-          <box size="0.4 0.1 0.1"/>
-        </geometry>
-      </collision>
-    </link>
-
-    <joint name="right_base_joint" type="fixed">
-      <parent link="right_leg"/>
-      <child link="right_base"/>
-      <origin xyz="0 0 -0.6"/>
-    </joint>
-
-    <link name="right_front_wheel">
-      <visual>
-        <origin rpy="1.57075 0 0" xyz="0 0 0"/>
-        <geometry>
-          <cylinder length="0.1" radius="0.035"/>
-        </geometry>
-        <material name="black"/>
-      </visual>
-      <collision>
-        <origin rpy="1.57075 0 0" xyz="0 0 0"/>
-        <geometry>
-          <cylinder length="0.1" radius="0.035"/>
-        </geometry>
-      </collision>
-    </link>
-    <joint name="right_front_wheel_joint" type="continuous">
-      <parent link="right_base"/>
-      <child link="right_front_wheel"/>
-      <axis xyz="0 1 0"/>
-      <origin rpy="0 0 0" xyz="0.13333333333 0 -0.085"/>
-    </joint>
-
-      <link name="right_back_wheel">
-      <visual>
-        <origin rpy="1.57075 0 0" xyz="0 0 0"/>
-        <geometry>
-          <cylinder length="0.1" radius="0.035"/>
-        </geometry>
-        <material name="black"/>
-      </visual>
-      <collision>
-        <origin rpy="1.57075 0 0" xyz="0 0 0"/>
-        <geometry>
-          <cylinder length="0.1" radius="0.035"/>
-        </geometry>
-      </collision>
-    </link>
-    <joint name="right_back_wheel_joint" type="continuous">
-      <parent link="right_base"/>
-      <child link="right_back_wheel"/>
-      <axis xyz="0 1 0"/>
-      <origin rpy="0 0 0" xyz="-0.13333333333 0 -0.085"/>
-    </joint>
-
-    <link name="left_leg">
-      <visual>
-        <geometry>
-          <box size="0.6 0.1 0.2"/>
-        </geometry>
-        <origin rpy="0 1.57075 0" xyz="0 0 -0.3"/>
-        <material name="white"/>
-      </visual>
-      <collision>
-        <geometry>
-          <box size="0.6 0.1 0.2"/>
-        </geometry>
-      </collision>
-    </link>
-
-    <joint name="base_to_left_leg" type="fixed">
-      <parent link="base_link"/>
-      <child link="left_leg"/>
-      <origin xyz="0 0.22 0.25"/>
-    </joint>
-
-      <link name="left_base">
-      <visual>
-        <geometry>
-          <box size="0.4 0.1 0.1"/>
-        </geometry>
-        <material name="white"/>
-      </visual>
-      <collision>
-        <geometry>
-          <box size="0.4 0.1 0.1"/>
-        </geometry>
-      </collision>
-    </link>
-
-    <joint name="left_base_joint" type="fixed">
-      <parent link="left_leg"/>
-      <child link="left_base"/>
-      <origin xyz="0 0 -0.6"/>
-    </joint>
-
-    <link name="left_front_wheel">
-      <visual>
-        <origin rpy="1.57075 0 0" xyz="0 0 0"/>
-        <geometry>
-          <cylinder length="0.1" radius="0.035"/>
-        </geometry>
-        <material name="black"/>
-      </visual>
-      <collision>
-        <origin rpy="1.57075 0 0" xyz="0 0 0"/>
-        <geometry>
-          <cylinder length="0.1" radius="0.035"/>
-        </geometry>
-      </collision>
-    </link>
-    <joint name="left_front_wheel_joint" type="continuous">
-      <parent link="left_base"/>
-      <child link="left_front_wheel"/>
-      <axis xyz="0 1 0"/>
-      <origin rpy="0 0 0" xyz="0.13333333333 0 -0.085"/>
-    </joint>
-
-      <link name="left_back_wheel">
-      <visual>
-        <origin rpy="1.57075 0 0" xyz="0 0 0"/>
-        <geometry>
-          <cylinder length="0.1" radius="0.035"/>
-        </geometry>
-        <material name="black"/>
-      </visual>
-      <collision>
-        <origin rpy="1.57075 0 0" xyz="0 0 0"/>
-        <geometry>
-          <cylinder length="0.1" radius="0.035"/>
-        </geometry>
-      </collision>
-    </link>
-    <joint name="left_back_wheel_joint" type="continuous">
-      <parent link="left_base"/>
-      <child link="left_back_wheel"/>
-      <axis xyz="0 1 0"/>
-      <origin rpy="0 0 0" xyz="-0.13333333333 0 -0.085"/>
-    </joint>
-
-    <joint name="gripper_extension" type="prismatic">
-      <parent link="base_link"/>
-      <child link="gripper_pole"/>
-      <limit effort="1000.0" lower="-0.38" upper="0" velocity="0.5"/>
-      <axis xyz="0 1 0"/>
-      <origin rpy="0 0 0" xyz="0.19 0 0.2"/>
-    </joint>
-
-    <link name="gripper_pole">
-      <visual>
-        <geometry>
-          <cylinder length="0.2" radius="0.01"/>
-        </geometry>
-        <origin rpy="0 1.57075 0 " xyz="0.1 0 0"/>
-      </visual>
-      <collision>
-        <geometry>
-          <cylinder length="0.2" radius="0.01"/>
-        </geometry>
-        <origin rpy="0 1.57075 0 " xyz="0.1 0 0"/>
-      </collision>
-    </link>
-
-    <joint name="left_gripper_joint" type="revolute">
-      <axis xyz="0 0 1"/>
-      <limit effort="1000.0" lower="0.0" upper="0.548" velocity="0.5"/>
-      <origin rpy="0 0 0" xyz="0.2 0.01 0"/>
-      <parent link="gripper_pole"/>
-      <child link="left_gripper"/>
-    </joint>
-
-    <link name="left_gripper">
-      <visual>
-        <origin rpy="0.0 0 0" xyz="0 0 0"/>
-        <geometry>
-          <mesh filename="package://meshes/l_finger.dae"/>
-        </geometry>
-      </visual>
-      <collision>
-        <origin rpy="0.0 0 0" xyz="0 0 0"/>
-        <geometry>
-          <mesh filename="package://meshes/l_finger.dae"/>
-        </geometry>
-      </collision>
-    </link>
-    <joint name="left_tip_joint" type="fixed">
-      <parent link="left_gripper"/>
-      <child link="left_tip"/>
-    </joint>
-
-    <link name="left_tip">
-      <visual>
-        <origin rpy="0.0 0 0" xyz="0.09137 0.00495 0"/>
-        <geometry>
-          <mesh filename="package://meshes/l_finger_tip.dae"/>
-        </geometry>
-      </visual>
-      <collision>
-        <origin rpy="0.0 0 0" xyz="0.09137 0.00495 0"/>
-        <geometry>
-          <mesh filename="package://meshes/l_finger_tip.dae"/>
-        </geometry>
-      </collision>
-    </link>
-    <joint name="right_gripper_joint" type="revolute">
-      <axis xyz="0 0 -1"/>
-      <limit effort="1000.0" lower="0.0" upper="0.548" velocity="0.5"/>
-      <origin rpy="0 0 0" xyz="0.2 -0.01 0"/>
-      <parent link="gripper_pole"/>
-      <child link="right_gripper"/>
-    </joint>
-
-    <link name="right_gripper">
-      <visual>
-        <origin rpy="-3.1415 0 0" xyz="0 0 0"/>
-        <geometry>
-          <mesh filename="package://meshes/l_finger.dae"/>
-        </geometry>
-      </visual>
-      <collision>
-        <origin rpy="-3.1415 0 0" xyz="0 0 0"/>
-        <geometry>
-          <mesh filename="package://meshes/l_finger.dae"/>
-        </geometry>
-      </collision>
-    </link>
-
-    <joint name="right_tip_joint" type="fixed">
-      <parent link="right_gripper"/>
-      <child link="right_tip"/>
-    </joint>
-
-    <link name="right_tip">
-      <visual>
-        <origin rpy="-3.1415 0 0" xyz="0.09137 0.00495 0"/>
-        <geometry>
-          <mesh filename="package://meshes/l_finger_tip.dae"/>
-        </geometry>
-      </visual>
-      <collision>
-        <origin rpy="-3.1415 0 0" xyz="0.09137 0.00495 0"/>
-        <geometry>
-          <mesh filename="package://meshes/l_finger_tip.dae"/>
-        </geometry>
-      </collision>
-    </link>
-
-    <link name="head">
-      <visual>
-        <geometry>
-          <sphere radius="0.2"/>
-        </geometry>
-        <material name="white"/>
-      </visual>
-      <collision>
-        <geometry>
-          <sphere radius="0.2"/>
-        </geometry>
-      </collision>
-    </link>
-    <joint name="head_swivel" type="continuous">
-      <parent link="base_link"/>
-      <child link="head"/>
-      <axis xyz="0 0 1"/>
-      <origin xyz="0 0 0.3"/>
-    </joint>
-
-    <link name="box">
-      <visual>
-        <geometry>
-          <box size="0.08 0.08 0.08"/>
-        </geometry>
-        <material name="blue"/>
-      </visual>
-      <collision>
-        <geometry>
-          <box size="0.08 0.08 0.08"/>
-        </geometry>
-      </collision>
-    </link>
-
-    <joint name="tobox" type="fixed">
-      <parent link="head"/>
-      <child link="box"/>
-      <origin xyz="0.1814 0 0.1414"/>
-    </joint>
-  -->
 </robot>
