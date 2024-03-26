@@ -4,18 +4,6 @@
     <color rgba="0 0 0 1"/>
   </material>
 
-  <material name="blue">
-    <color rgba="0 0 0.8 1"/>
-  </material>
-
-  <material name="blue_clear">
-    <color rgba="0 0 0.8 0.5"/>
-  </material>
-
-  <material name="red_clear">
-    <color rgba="0.8 0 0 0.5"/>
-  </material>
-
   <material name="white">
     <color rgba="1 1 1 1"/>
   </material>
@@ -479,14 +467,14 @@
   <link name="arm_link_5b">
     <visual>
       <geometry>
-        <cylinder radius="0.06" length="0.06"/>
+        <cylinder radius="0.05" length="0.06"/>
       </geometry>
       <origin xyz="0 0.03 0" rpy="1.570796 0 0"/>
       <material name="link_col_2"/>
     </visual>
     <collision>
       <geometry>
-        <cylinder radius="0.06" length="0.06"/>
+        <cylinder radius="0.05" length="0.06"/>
       </geometry>
       <origin xyz="0 0.03 0" rpy="1.570796 0 0"/>
     </collision>
@@ -500,16 +488,16 @@
   <link name="arm_link_6b">
     <visual>
       <geometry>
-        <cylinder length="0.06" radius="0.06"/>
+        <cylinder length="0.06" radius="0.05"/>
       </geometry>
       <origin xyz="0 -0.03 0" rpy="1.570796 0 0"/>
       <material name="link_col_3"/>
     </visual>
     <collision>
       <geometry>
-        <cylinder length="0.06" radius="0.06"/>
+        <cylinder length="0.06" radius="0.05"/>
       </geometry>
-      <origin xyz="0 -0.03 0" rpy="1.570796 0 0"/>
+      <origin xyz="0 -0.0.3 0" rpy="1.570796 0 0"/>
     </collision>
   </link>
   <joint name="arm_link_6b_to_5b" type="revolute">
@@ -520,25 +508,99 @@
     <limit effort="1000.0" lower="-1.134464" upper="3.054326" velocity="5.253441"/>
   </joint>
 
+  <link name="arm_link_6c">
+    <visual>
+      <geometry>
+        <box size="0.088 0.03 0.08"/>
+      </geometry>
+      <origin xyz="0.044 -0.015 0" rpy="0 0 0"/>
+      <material name="link_col_3"/>
+    </visual>
+  </link>
+  <joint name="arm_link_6c_to_6b" type="fixed">
+    <parent link="arm_link_6b"/>
+    <child link="arm_link_6c"/>
+    <origin xyz="0 -0.03 0" rpy="0 0 0.174533"/>
+  </joint>
+
   <link name="arm_link_6a">
     <visual>
       <geometry>
-        <cylinder length="0.12" radius="0.06"/>
+        <cylinder length="0.13" radius="0.045"/>
       </geometry>
-      <origin xyz="0 -0.03 0" rpy="0 0 0"/>
+      <origin xyz="0 0 0.065" rpy="0 0 0"/>
       <material name="link_col_3"/>
     </visual>
     <collision>
       <geometry>
-        <cylinder length="0.12" radius="0.06"/>
+        <cylinder length="0.13" radius="0.045"/>
       </geometry>
-      <origin xyz="0 -0.03 0" rpy="0 0 0"/>
+      <origin xyz="0 0 0.065" rpy="0 0 0"/>
     </collision>
   </link>
   <joint name="arm_link_6a_to_6b" type="fixed">
-
+    <parent link="arm_link_6b"/>
+    <child link="arm_link_6a"/>
+    <origin xyz="0.088 0.0 -0.045" rpy="0 0 0"/>
   </joint>
 
-  <!-- TO DO: Finish link 6, Make joint 7 -->
+  <link name="arm_link_7a">
+    <visual>
+      <geometry>
+        <cylinder length="0.047" radius="0.045"/>
+      </geometry>
+      <origin xyz="0 0 -0.0235" rpy="0 0 0"/>
+      <material name="link_col_1"/>
+    </visual>
+    <collision>
+      <geometry>
+        <cylinder length="0.047" radius="0.045"/>
+      </geometry>
+      <origin xyz="0 0 -0.0235" rpy="0 0 0"/>
+    </collision>
+  </link>
+  <joint name="arm_link_7a_to_6a" type="revolute">
+    <parent link="arm_link_6a"/>
+    <child link="arm_link_7a"/>
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+    <axis xyz="0 0 1"/>
+    <limit effort="1000.0" lower="-3.054326" upper="3.054326" velocity="5.253441"/>
+  </joint>
 
+  <link name="arm_link_7b">
+    <visual>
+      <geometry>
+        <cylinder radius="0.0325" length="0.01"/>
+      </geometry>
+      <origin xyz="0 0 0.005" rpy="0 0 0"/>
+      <material name="link_col_1"/>
+    </visual>
+  </link>
+  <joint name="arm_link_7b_to_7a" type="fixed">
+    <parent link="arm_link_7a"/>
+    <child link="arm_link_7b"/>
+    <origin xyz="0 0 -0.057" rpy="0 0 0"/>
+  </joint>
+
+  <link name="arm_link_7c">
+    <visual>
+      <geometry>
+        <box size="0.09 0.0825 0.0375"/>
+      </geometry>
+      <origin xyz="0.045 0 0.01875" rpy="0 0 0"/>
+      <material name="link_col_1"/>
+    </visual>
+    <collision>
+      <geometry>
+        <box size="0.09 0.0825 0.0375"/>
+      </geometry>
+      <origin xyz="0.045 0 0.01875" rpy="0 0 0"/>
+    </collision>
+  </link>
+  <joint name="arm_link_7c_to_7a" type="fixed">
+    <parent link="arm_link_7a"/>
+    <child link="arm_link_7c"/>
+    <origin xyz="0 0 -0.047" rpy="0 0 -0.785398"/>
+  </joint>
+  
 </robot>
