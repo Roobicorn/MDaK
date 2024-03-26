@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<robot name="franka_research_3">
+<robot name="poolbot">
   <material name="black">
     <color rgba="0 0 0 1"/>
   </material>
@@ -24,6 +24,12 @@
   <link name="world">
   </link>
 
+
+
+
+
+
+  <!--
   <link name="base_box">
     <visual>
       <geometry>
@@ -317,8 +323,6 @@
     <child link="arm_link_4b"/>
     <origin xyz="0 0 0" rpy="0 0 0"/>
     <axis xyz="0 1 0"/>
-    <!--limit effort="1000.0" lower="-0.122173" upper="-3.071779" velocity="2.617994"/>
-    (already set at -90) -->
     <limit effort="1000.0" lower="-1.448623" upper="1.500983" velocity="2.617994"/>
   </joint>
 
@@ -603,5 +607,5 @@
     <child link="arm_link_7c"/>
     <origin xyz="0 0 -0.047" rpy="0 0 -0.785398"/>
   </joint>
-
+-->
 </robot>
