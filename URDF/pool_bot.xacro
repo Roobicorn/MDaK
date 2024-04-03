@@ -1,1 +1,58 @@
 <?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="pool_table">
+  
+  <!-- Define Parameters -->
+  <xacro:property name="table_leg_radius" value="0.075"/>
+  <xacro:property name="table_leg_length" value="0.5"/>
+  
+  <xacro:property name="table_inner_width" value="0.82"/>
+  
+  
+  <!-- Define macro for table legs -->
+  <xacro:macro name="table_leg" params="name">
+    <link name="table_leg_${name}">
+      <visual>
+        <geometry>
+          <cylinder radius="${table_leg_radius}" length="${table_leg_length}"/>
+        </geometry>
+        <origin xyz="0 0 ${table_leg_length/2}"/>
+        <material name="brown"/>
+      </visual>
+      <collision>
+        <geometry>
+          <cylinder radius="${table_leg_radius}" length="${table_leg_length}"/>
+        </geometry>
+        <origin xyz="0 0 ${table_leg_length/2}"/>
+      </collision> 
+    </link>
+  </xacro:macro>
+  
+    
+  <!-- Define Materials -->
+  <material name="black">
+    <color rgba="0 0 0 1"/>
+  </material>
+
+  <material name="white">
+    <color rgba="1 1 1 1"/>
+  </material>
+
+  <material name="brown">
+    <color rgba="0.56 0.32 0.12 1"/>
+  </material>
+
+  <!-- Define links and joints -->
+
+  <link name="world">
+  </link>
+
+  <xacro:table_leg name="FL"/>
+  <xacro:table_leg name="BL"/>
+  <xacro:table_leg name="FR"/>
+  <xacro:table_leg name="BR"/>
+
+  <joint name="table_leg_FL_to_world" type="fixed">
+    <parent link="world"/>
+    <child link="table_leg_FL"/>
+    <origin xyz="1 ${tablewidth/2} 0"/>
+  </joint>
