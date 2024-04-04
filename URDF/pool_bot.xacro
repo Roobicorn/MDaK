@@ -6,6 +6,11 @@
   <xacro:property name="table_leg_length" value="0.5"/>
   
   <xacro:property name="table_inner_width" value="0.82"/>
+  <xacro:property name="table_outer_width" value="1.12"/>
+  <xacro:property name="table_inner_length" value="1.6"/>
+  <xacro:property name="table_outer_length" value="1.9"/>
+  <xacro:property name="table_inner_height" value="0.75"/>
+  <xacro:property name="table_outer_height" value="0.8"/>
   
   
   <!-- Define macro for table legs -->
@@ -54,5 +59,26 @@
   <joint name="table_leg_FL_to_world" type="fixed">
     <parent link="world"/>
     <child link="table_leg_FL"/>
-    <origin xyz="1 ${tablewidth/2} 0"/>
+    <origin xyz="${3*table_inner_length/8} ${3*table_inner_width/8} 0"/>
   </joint>
+  <joint name="table_leg_BL_to_world" type="fixed">
+    <parent link="world"/>
+    <child link="table_leg_BL"/>
+    <origin xyz="${-3*table_inner_length/8} ${3*table_inner_width/8} 0"/>
+  </joint>
+  <joint name="table_leg_FR_to_world" type="fixed">
+    <parent link="world"/>
+    <child link="table_leg_FR"/>
+    <origin xyz="${3*table_inner_length/8} ${-3*table_inner_width/8} 0"/>
+  </joint>
+  <joint name="table_leg_BR_to_world" type="fixed">
+    <parent link="world"/>
+    <child link="table_leg_BR"/>
+    <origin xyz="${-3*table_inner_length/8} ${-3*table_inner_width/8} 0"/>
+  </joint>
+
+  <!-- Tabletop (CAD?)
+    <link name="  
+  -->
+
+
