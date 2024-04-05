@@ -1,6 +1,7 @@
 import pybullet as p
 import time
 import pybullet_data
+import subprocess
 
 if __name__ == '__main__':
     physicsClient = p.connect(p.GUI)#or p.DIRECT for non-graphical version
@@ -9,7 +10,11 @@ if __name__ == '__main__':
     planeId = p.loadURDF("plane.urdf")
     #Load Table & Balls URDFs
 
-    ObjId = p.loadURDF("/home/userfs/r/rh1937/Kinematic_Assignment/MDaK/URDF/MDaK_assignment_4.urdf", [0,0,0])
+    xacro_file = "pool_bot.xacro"
+    urdf_file = "pool_bot.urdf"
+    subprocess.run(['xacro', xacro_file, '--inorder', '-o', urdf_file])
+
+    ObjId = p.loadURDF("/home/userfs/r/rh1937/Kinematic_Assignment/MDaK/URDF/pool_bot.urdf", [0,0,0])
     # You can also specify the position and orientation by
     #------------------------------------------------------------------------
     # startPos = [0,0,1]

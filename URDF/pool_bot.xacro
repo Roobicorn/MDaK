@@ -59,22 +59,22 @@
   <joint name="table_leg_FL_to_world" type="fixed">
     <parent link="world"/>
     <child link="table_leg_FL"/>
-    <origin xyz="${3*table_inner_length/8} ${3*table_inner_width/8} 0"/>
+    <origin xyz="${3*table_inner_width/8} ${3*table_inner_length/8} 0"/>
   </joint>
   <joint name="table_leg_BL_to_world" type="fixed">
     <parent link="world"/>
     <child link="table_leg_BL"/>
-    <origin xyz="${-3*table_inner_length/8} ${3*table_inner_width/8} 0"/>
+    <origin xyz="${-3*table_inner_width/8} ${3*table_inner_length/8} 0"/>
   </joint>
   <joint name="table_leg_FR_to_world" type="fixed">
     <parent link="world"/>
     <child link="table_leg_FR"/>
-    <origin xyz="${3*table_inner_length/8} ${-3*table_inner_width/8} 0"/>
+    <origin xyz="${3*table_inner_width/8} ${-3*table_inner_length/8} 0"/>
   </joint>
   <joint name="table_leg_BR_to_world" type="fixed">
     <parent link="world"/>
     <child link="table_leg_BR"/>
-    <origin xyz="${-3*table_inner_length/8} ${-3*table_inner_width/8} 0"/>
+    <origin xyz="${-3*table_inner_width/8} ${-3*table_inner_length/8} 0"/>
   </joint>
 
   <!-- Tabletop (CAD?)
