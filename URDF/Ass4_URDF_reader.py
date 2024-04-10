@@ -10,10 +10,6 @@ if __name__ == '__main__':
     planeId = p.loadURDF("plane.urdf")
     #Load Table & Balls URDFs
 
-    xacro_file = "pool_bot.xacro"
-    urdf_file = "pool_bot.urdf"
-    subprocess.run(['xacro', xacro_file, '--inorder', '-o', urdf_file])
-
     ObjId = p.loadURDF("/home/userfs/r/rh1937/Kinematic_Assignment/MDaK/URDF/pool_bot.urdf", [0,0,0])
     # You can also specify the position and orientation by
     #------------------------------------------------------------------------

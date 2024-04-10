@@ -20,14 +20,14 @@
         <geometry>
           <cylinder radius="${table_leg_radius}" length="${table_leg_length}"/>
         </geometry>
-        <origin xyz="0 0 ${table_leg_length/2}"/>
+        <origin xyz="0 0 -${table_leg_length/2}"/>
         <material name="brown"/>
       </visual>
       <collision>
         <geometry>
           <cylinder radius="${table_leg_radius}" length="${table_leg_length}"/>
         </geometry>
-        <origin xyz="0 0 ${table_leg_length/2}"/>
+        <origin xyz="0 0 -${table_leg_length/2}"/>
       </collision> 
     </link>
   </xacro:macro>
@@ -51,34 +51,53 @@
   <link name="world">
   </link>
 
+  <link name="tabletop">
+    <visual>
+      <geometry>
+        <box size="${table_outer_width} ${table_outer_length} ${table_inner_height-table_leg_length}"/>
+      </geometry>
+      <origin xyz="0 0 ${(table_inner_height-table_leg_length)/2}"/>
+      <material name="brown"/>
+    </visual>
+    <collision>
+      <geometry>
+        <box size="${table_outer_width} ${table_outer_length} ${table_inner_height-table_leg_length}"/>
+      </geometry>
+      <origin xyz="0 0 ${(table_inner_height-table_leg_length)/2}"/>
+    </collision>
+  </link>
+  <joint name="tabletop_to_world" type="fixed">
+    <parent link="world"/>
+    <child link="tabletop"/>
+    <origin xyz="0 0 ${table_leg_length}"/>
+  </joint>
+
   <xacro:table_leg name="FL"/>
   <xacro:table_leg name="BL"/>
   <xacro:table_leg name="FR"/>
   <xacro:table_leg name="BR"/>
 
-  <joint name="table_leg_FL_to_world" type="fixed">
-    <parent link="world"/>
+  <joint name="table_leg_FL_to_tabletop" type="fixed">
+    <parent link="tabletop"/>
     <child link="table_leg_FL"/>
-    <origin xyz="${3*table_inner_width/8} ${3*table_inner_length/8} 0"/>
+    <origin xyz="${table_inner_width/2} ${table_inner_length/2} 0"/>
   </joint>
-  <joint name="table_leg_BL_to_world" type="fixed">
-    <parent link="world"/>
+  <joint name="table_leg_BL_to_tabletop" type="fixed">
+    <parent link="tabletop"/>
     <child link="table_leg_BL"/>
-    <origin xyz="${-3*table_inner_width/8} ${3*table_inner_length/8} 0"/>
+    <origin xyz="${-table_inner_width/2} ${table_inner_length/2} 0"/>
   </joint>
-  <joint name="table_leg_FR_to_world" type="fixed">
-    <parent link="world"/>
+  <joint name="table_leg_FR_to_tabletop" type="fixed">
+    <parent link="tabletop"/>
     <child link="table_leg_FR"/>
-    <origin xyz="${3*table_inner_width/8} ${-3*table_inner_length/8} 0"/>
+    <origin xyz="${table_inner_width/2} ${-table_inner_length/2} 0"/>
   </joint>
-  <joint name="table_leg_BR_to_world" type="fixed">
-    <parent link="world"/>
+  <joint name="table_leg_BR_to_tabletop" type="fixed">
+    <parent link="tabletop"/>
     <child link="table_leg_BR"/>
-    <origin xyz="${-3*table_inner_width/8} ${-3*table_inner_length/8} 0"/>
+    <origin xyz="${-table_inner_width/2} ${-table_inner_length/2} 0"/>
   </joint>
 
-  <!-- Tabletop (CAD?)
-    <link name="  
-  -->
 
 
+</robot>
