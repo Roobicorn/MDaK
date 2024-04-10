@@ -10,6 +10,12 @@ if __name__ == '__main__':
     planeId = p.loadURDF("plane.urdf")
     #Load Table & Balls URDFs
 
+    # Code to automate converting xacro file to URDF.
+    # Not currently working, manually convert files in terminal.
+    # xacro_file = "/home/userfs/r/rh1937/Kinematic_Assignment/MDaK/URDF/pool_bot.xacro"
+    # urdf_file = "/home/userfs/r/rh1937/Kinematic_Assignment/MDaK/URDF/pool_bot.urdf"
+    # subprocess.run(['xacro', xacro_file, '>', urdf_file])
+
     ObjId = p.loadURDF("/home/userfs/r/rh1937/Kinematic_Assignment/MDaK/URDF/pool_bot.urdf", [0,0,0])
     # You can also specify the position and orientation by
     #------------------------------------------------------------------------
