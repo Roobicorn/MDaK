@@ -48,6 +48,10 @@
     <color rgba="0.56 0.32 0.12 1"/>
   </material>
 
+  <material name="green">
+    <color rgba="0 1 0 1"/>
+  </material>
+
   <!-- Define links and joints -->
 
   <link name="world">
@@ -59,7 +63,7 @@
         <box size="${table_outer_width} ${table_outer_length} ${tabletop_inner_height}"/>
       </geometry>
       <origin xyz="0 0 ${(tabletop_inner_height)/2}"/>
-      <material name="brown"/>
+      <material name="green"/>
     </visual>
     <collision>
       <geometry>
