@@ -53,49 +53,36 @@ if __name__ == '__main__':
 
     linkStates = p.getLinkStates(fr3_robot, list(range(num_joints)), computeLinkVelocity=0, computeForwardKinematics=1)
     for i in range(len(linkStates)):
-        print("link id =", i, "worldPos =", linkStates[i][0], "worldOrn =", linkStates[i][1], "locInertialPos =", linkStates[i][2],
-              "locInertialOrn =", linkStates[i][3], "worldLinkFramePos=", linkStates[i][4], "worldLinkFrameOrn=", linkStates[i][5])
+        print("link id =", i, "worldPos =", linkStates[i][0], "worldOrn =", p.getEulerFromQuaternion(linkStates[i][1]),
+              #"locInertialPos =", linkStates[i][2], "locInertialOrn =", p.getEulerFromQuaternion(linkStates[i][3]),
+              "worldLinkFramePos=", linkStates[i][4], "worldLinkFrameOrn=", p.getEulerFromQuaternion(linkStates[i][5]))
 
-
-    # base_pos_orn = p.getBasePositionAndOrientation(fr3_robot)
-    # base_euler_orn = p.getEulerFromQuaternion(base_pos_orn[1])
-    # print("base position and orientation =", base_pos_orn)
-    # print("base euler orientation", base_euler_orn)
-
+      #TO DO: Try implementing the following from forum post:
+    # _link_name_to_index = {p.getBodyInfo(model_id)[0].decode('UTF-8'): -1, }
+    #
+    # for _id in range(p.getNumJoints(model_id)):
+    #     _name = p.getJointInfo(model_id, _id)[12].decode('UTF-8')
+    #     _link_name_to_index[_name] = _id
 
 
     #manipulating joints
-    #rotates arm_link_1a_to_base_cyl ccw around up z axis
-    #p.setJointMotorControl2(fr3_robot, 2, controlMode=p.VELOCITY_CONTROL, targetVelocity=5, force=100)
+    #rotates arm_link_7a_to_6a
+    p.setJointMotorControl2(fr3_robot, 23, controlMode=p.POSITION_CONTROL, targetPosition=-0.45, force=50)
 
-    #rotates arm_link_2b_to_1b
-    #p.setJointMotorControl2(fr3_robot, 5, controlMode=p.POSITION_CONTROL, targetPosition=-0.45, force=50)
-
-    #p.setJointMotorControl2(fr3_robot, 8, controlMode=p.POSITION_CONTROL, targetPosition=2, force=50)
-
-    #jointMotorControlArray
-    #p.setJointMotorControlArray(fr3_robot, r_joint_indexes, controlMode = p.POSITION_CONTROL) #targetPositions = [list], forces= [list]
-
-    # velo = 2.0
-    # vel_rising = False
 
     while True:
         p.stepSimulation()
 
-        for i in range(len(paramIds)):
-            c = paramIds[i]
-            targetPos = p.readUserDebugParameter(c)
-            p.setJointMotorControl2(fr3_robot, jointIds[i], p.POSITION_CONTROL, targetPos, force=5 * 240.)
+        # for i in range(len(paramIds)):
+        #     c = paramIds[i]
+        #     targetPos = p.readUserDebugParameter(c)
+        #     p.setJointMotorControl2(fr3_robot, jointIds[i], p.POSITION_CONTROL, targetPos, force=5 * 240.)
 
-
-        #Oscillates joint 1a_to_base:
-        # p.setJointMotorControl2(fr3_robot, 2, controlMode=p.VELOCITY_CONTROL, targetVelocity=velo, force=10)
-        # if vel_rising == False:
-        #     velo -= 0.01
-        #     if velo < -2: vel_rising = True
-        # else:
-        #     velo += 0.01
-        #     if velo > 2: vel_rising = False
-
+        linkStates = p.getLinkStates(fr3_robot, list(range(num_joints)), computeLinkVelocity=0, computeForwardKinematics=1)
+        #for linkId in range(len(linkStates)):
+        linkId = 22
+        print("link id =", linkId, "worldPos =", linkStates[linkId][0], "worldOrn =", p.getEulerFromQuaternion(linkStates[linkId][1]),
+                  #"locInertialPos =", linkStates[linkId][2], "locInertialOrn =", p.getEulerFromQuaternion(linkStates[linkId][3]),
+                  "worldLinkFramePos=", linkStates[linkId][4], "worldLinkFrameOrn=", p.getEulerFromQuaternion(linkStates[linkId][5]))
 
         time.sleep(1./240.)
