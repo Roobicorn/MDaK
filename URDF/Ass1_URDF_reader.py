@@ -27,16 +27,39 @@ if __name__ == '__main__':
     num_joints = p.getNumJoints(fr3_robot)
     print("number of joints: ", num_joints)
 
-    revolute_joints = []
+    # revolute_joints = []
+    #
+    # for num in range(num_joints):
+    #     info = p.getJointInfo(fr3_robot, num)
+    #     if(info[2] == 0):
+    #         revolute_joints.append(info)
+    #         print(info)
 
-    for num in range(num_joints):
-        info = p.getJointInfo(fr3_robot, num)
-        if(info[2] == 0):
-            revolute_joints.append(info)
-            print(info)
 
-    r_joint_indexes = [joint[0] for joint in revolute_joints]
-    print(r_joint_indexes)
+    #Joint controllers (from xarm.py example)
+    jointIds = []
+    paramIds = []
+
+    for j in range(p.getNumJoints(fr3_robot)):
+        p.changeDynamics(fr3_robot, j, linearDamping=0, angularDamping=0)
+        info = p.getJointInfo(fr3_robot, j)
+        # print(info)
+        jointName = info[1]
+        jointType = info[2]
+        if (jointType == p.JOINT_PRISMATIC or jointType == p.JOINT_REVOLUTE):
+            jointIds.append(j)
+            paramIds.append(p.addUserDebugParameter(jointName.decode("utf-8"), -4, 4, 0))
+
+
+
+    print("prismatic or revolute joint IDs =", jointIds)
+
+
+    base_pos_orn = p.getBasePositionAndOrientation(fr3_robot)
+    base_euler_orn = p.getEulerFromQuaternion(base_pos_orn[1])
+    print("base position and orientation =", base_pos_orn)
+    print("base euler orientation", base_euler_orn)
+
 
     #manipulating joints
     #rotates arm_link_1a_to_base_cyl ccw around up z axis
@@ -50,20 +73,26 @@ if __name__ == '__main__':
     #jointMotorControlArray
     #p.setJointMotorControlArray(fr3_robot, r_joint_indexes, controlMode = p.POSITION_CONTROL) #targetPositions = [list], forces= [list]
 
-    velo = 2.0
-    vel_rising = False
+    # velo = 2.0
+    # vel_rising = False
 
     while True:
         p.stepSimulation()
 
+        for i in range(len(paramIds)):
+            c = paramIds[i]
+            targetPos = p.readUserDebugParameter(c)
+            p.setJointMotorControl2(fr3_robot, jointIds[i], p.POSITION_CONTROL, targetPos, force=5 * 240.)
+
+
         #Oscillates joint 1a_to_base:
-        p.setJointMotorControl2(fr3_robot, 2, controlMode=p.VELOCITY_CONTROL, targetVelocity=velo, force=10)
-        if vel_rising == False:
-            velo -= 0.01
-            if velo < -2: vel_rising = True
-        else:
-            velo += 0.01
-            if velo > 2: vel_rising = False
+        # p.setJointMotorControl2(fr3_robot, 2, controlMode=p.VELOCITY_CONTROL, targetVelocity=velo, force=10)
+        # if vel_rising == False:
+        #     velo -= 0.01
+        #     if velo < -2: vel_rising = True
+        # else:
+        #     velo += 0.01
+        #     if velo > 2: vel_rising = False
 
 
         time.sleep(1./240.)
