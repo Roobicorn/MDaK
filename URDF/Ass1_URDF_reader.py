@@ -23,18 +23,15 @@ if __name__ == '__main__':
 
 
     #Getting joint info
-
     num_joints = p.getNumJoints(fr3_robot)
     print("number of joints: ", num_joints)
 
     # revolute_joints = []
-    #
     # for num in range(num_joints):
     #     info = p.getJointInfo(fr3_robot, num)
     #     if(info[2] == 0):
     #         revolute_joints.append(info)
     #         print(info)
-
 
     #Joint controllers (from xarm.py example)
     jointIds = []
@@ -50,15 +47,21 @@ if __name__ == '__main__':
             jointIds.append(j)
             paramIds.append(p.addUserDebugParameter(jointName.decode("utf-8"), -4, 4, 0))
 
-
-
     print("prismatic or revolute joint IDs =", jointIds)
 
+    #Getting link info
 
-    base_pos_orn = p.getBasePositionAndOrientation(fr3_robot)
-    base_euler_orn = p.getEulerFromQuaternion(base_pos_orn[1])
-    print("base position and orientation =", base_pos_orn)
-    print("base euler orientation", base_euler_orn)
+    linkStates = p.getLinkStates(fr3_robot, list(range(num_joints)), computeLinkVelocity=0, computeForwardKinematics=1)
+    for i in range(len(linkStates)):
+        print("link id =", i, "worldPos =", linkStates[i][0], "worldOrn =", linkStates[i][1], "locInertialPos =", linkStates[i][2],
+              "locInertialOrn =", linkStates[i][3], "worldLinkFramePos=", linkStates[i][4], "worldLinkFrameOrn=", linkStates[i][5])
+
+
+    # base_pos_orn = p.getBasePositionAndOrientation(fr3_robot)
+    # base_euler_orn = p.getEulerFromQuaternion(base_pos_orn[1])
+    # print("base position and orientation =", base_pos_orn)
+    # print("base euler orientation", base_euler_orn)
+
 
 
     #manipulating joints
