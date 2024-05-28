@@ -21,8 +21,10 @@ if __name__ == '__main__':
 
     rJointIds = []
     paramIds = []
-    link_name_to_index = {p.getBodyInfo(fr3_robot)[0].decode('UTF-8'): -1, }
-    joint_name_to_index = {}
+    #link_name_to_index = {p.getBodyInfo(fr3_robot)[0].decode('UTF-8'): -1}
+    index_to_link_name = {-1: p.getBodyInfo(fr3_robot)[0].decode('UTF-8')}
+    #joint_name_to_index = {}
+    index_to_joint_name = {}
 
     for j in range(p.getNumJoints(fr3_robot)):
         #p.changeDynamics(fr3_robot, j, linearDamping=0, angularDamping=0)
@@ -33,43 +35,65 @@ if __name__ == '__main__':
         linkName = info[12].decode('UTF-8')
         if (jointType == p.JOINT_REVOLUTE):
             rJointIds.append(j)
-            link_name_to_index[linkName] = j
-            joint_name_to_index[jointName] = j
+            #link_name_to_index[linkName] = j
+            index_to_link_name[j] = [linkName]
+            #joint_name_to_index[jointName] = j
+            index_to_joint_name[j] = jointName
 
             #set up joint control sliders
             paramIds.append(p.addUserDebugParameter(jointName, info[8], info[9], 0))
 
     print("revolute joint IDs:", rJointIds)
-    print("associated joint names:", joint_name_to_index)
-    print("associated link names:", link_name_to_index)
+    #print("associated joint names:", joint_name_to_index)
+    print("associated joint names: ", index_to_joint_name)
+    #print("associated link names:", link_name_to_index)
+    print("associated link names:", index_to_link_name)
 
-    #Getting link state info
-    # linkStates = p.getLinkStates(fr3_robot, list(range(num_joints)), computeLinkVelocity=0, computeForwardKinematics=1)
-    # for i in rJointIds:
-    #     print("link id =", i, "worldPos =", linkStates[i][0], "worldOrn =", p.getEulerFromQuaternion(linkStates[i][1]),
-    #           #"locInertialPos =", linkStates[i][2], "locInertialOrn =", p.getEulerFromQuaternion(linkStates[i][3]),
-    #           "worldLinkFramePos=", linkStates[i][4], "worldLinkFrameOrn=", p.getEulerFromQuaternion(linkStates[i][5]))
 
-    
-
+    linkStates = p.getLinkStates(fr3_robot, list(range(num_joints)), computeLinkVelocity=0, computeForwardKinematics=1)
+    for i in rJointIds:
+        print("link id =", i, "worldPos =", linkStates[i][0], "worldOrn =", p.getEulerFromQuaternion(linkStates[i][1]),
+              #"locInertialPos =", linkStates[i][2], "locInertialOrn =", p.getEulerFromQuaternion(linkStates[i][3]),
+              "worldLinkFramePos=", linkStates[i][4], "worldLinkFrameOrn=", p.getEulerFromQuaternion(linkStates[i][5]))
 
     #for printing link info in simulation
     stepcount = 0
     testLink = 23
 
+    ####################################################################################################################
+    # Assignment 2.1: Homogeneous Transform Matrices to the base frame for each joint
+
+    d_rotation_matrices = {}
+    d_position_matrices = {}
+    np.set_printoptions(precision=3, suppress=True)
+
+    for joint in rJointIds:
+        print("Transformation matrices for joint", index_to_joint_name.get(joint), "(joint ID:", joint, "):")
+        d_position_matrices[joint] = np.array([[linkStates[joint][0][0]],[linkStates[joint][0][1]],[linkStates[joint][0][2]]])
+        print("Position Matrix: \n", d_position_matrices.get(joint))
+
+
+
+
+
     while True:
         p.stepSimulation()
 
-        stepcount += 1
-        if stepcount == 500:
-            linkStates = p.getLinkStates(fr3_robot, list(range(num_joints)), computeLinkVelocity=0,
-                                         computeForwardKinematics=1)
-            print("link id =", testLink, "worldPos =", linkStates[testLink][0], "worldOrn =",
-                  p.getMatrixFromQuaternion(linkStates[testLink][1]),
-                  # "locInertialPos =", linkStates[testLink][2], "locInertialOrn =", p.getEulerFromQuaternion(linkStates[testLink][3]),
-                  "worldLinkFramePos=", linkStates[testLink][4], "worldLinkFrameOrn=",
-                  p.getMatrixFromQuaternion(linkStates[testLink][5]))
-            stepcount = 0
+
+
+
+
+# For forward kinematics
+        # stepcount += 1
+        # if stepcount == 500:
+        #     linkStates = p.getLinkStates(fr3_robot, list(range(num_joints)), computeLinkVelocity=0,
+        #                                  computeForwardKinematics=1)
+        #     print("link id =", testLink, "worldPos =", linkStates[testLink][0], "worldOrn =",
+        #           p.getMatrixFromQuaternion(linkStates[testLink][1]),
+        #           # "locInertialPos =", linkStates[testLink][2], "locInertialOrn =", p.getEulerFromQuaternion(linkStates[testLink][3]),
+        #           "worldLinkFramePos=", linkStates[testLink][4], "worldLinkFrameOrn=",
+        #           p.getMatrixFromQuaternion(linkStates[testLink][5]))
+        #     stepcount = 0
 
 
         for i in range(len(paramIds)):
