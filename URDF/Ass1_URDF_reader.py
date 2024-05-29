@@ -21,9 +21,7 @@ if __name__ == '__main__':
 
     rJointIds = []
     paramIds = []
-    #link_name_to_index = {p.getBodyInfo(fr3_robot)[0].decode('UTF-8'): -1}
     index_to_link_name = {-1: p.getBodyInfo(fr3_robot)[0].decode('UTF-8')}
-    #joint_name_to_index = {}
     index_to_joint_name = {}
 
     for j in range(p.getNumJoints(fr3_robot)):
@@ -87,6 +85,7 @@ if __name__ == '__main__':
     print("Forward Kinematics for joint", index_to_joint_name.get(rJointIds[-1]), "(joint ID:", rJointIds[-1], "):")
     print("v' = Tv")
 
+    # formatting array for print display only
     formatted_t_matrix = np.array([[f"{item:.3f}" for item in row] for row in d_homogeneous_t_matrices[rJointIds[-1]]])
 
     print("[[x']     ", formatted_t_matrix[0,:], " [[x]\n",
@@ -94,9 +93,44 @@ if __name__ == '__main__':
           " [z']]    ", formatted_t_matrix[2,:], "  [z]]\n", sep="")
 
     local_coords = np.array([[0],[0], [0], [1]])
-    print("local coordinates = \n", local_coords)
-    base_frame_coords = np.dot(d_homogeneous_t_matrices, local_coords) #or matmul?
-    print("local coordinates = \n", base_frame_coords)
+    print("point v in local coordinates = \n", local_coords)
+    base_frame_coords = np.dot(d_homogeneous_t_matrices[rJointIds[-1]], local_coords) #or matmul?
+    print("point v in base frame coordinates (v') = \n", base_frame_coords)
+
+    ####################################################################################################################
+    # Assignment 2.3: Compute for 2 different end-effector configurations the corresponding joint angles (Inverse Kinematics)
+    # End effector link: 23: ['arm_link_7a']
+
+    print("\nInverse Kinematics:")
+
+    #to store positions and orientations as lists
+    IK_target_pos = []
+    IK_target_orn = []
+    IK_joint_pos = []
+
+    # Target Configuration 1: Default
+    print("Target configuration 1 (Default): position (m) = [0.594, 0, 0.686], orientation (rad) = [0, 0, 0, 0]")
+    IK_target_pos.append(linkStates[rJointIds[-1]][0])
+    IK_target_orn.append(linkStates[rJointIds[-1]][1])
+    IK_joint_pos.append(p.calculateInverseKinematics(fr3_robot, rJointIds[-1], IK_target_pos[0],
+                                                 IK_target_orn[0]))
+    print("Joint positions for default configuration:", IK_joint_pos[0])
+
+    # Target Configuration 2: position (m): [0, 1, 0.3], orientation (rad): [pi/8, pi/4, -pi/8]
+    print("Target configuration 2 : position (m): [0, 1, 0.3], orientation (rad): [0.3927, 0.7854, -0.3927]")
+    IK_target_pos.append([0, 1, 0.3])
+    IK_target_orn.append(p.getQuaternionFromEuler([0.3927, 0.7854, -0.3927]))
+    IK_joint_pos.append(p.calculateInverseKinematics(fr3_robot, rJointIds[-1], IK_target_pos[1],
+                                                     IK_target_orn[1]))
+    print("Joint positions for configuration 2:", IK_joint_pos[1])
+
+
+
+
+
+
+
+
 
 
 
@@ -124,7 +158,8 @@ if __name__ == '__main__':
 
         for i in range(len(paramIds)):
             c = paramIds[i]
-            targetPos = p.readUserDebugParameter(c)
+            # targetPos = p.readUserDebugParameter(c)
+            targetPos = IK_joint_pos[1][c] #moves to IK position
             p.setJointMotorControl2(fr3_robot, rJointIds[i], p.POSITION_CONTROL, targetPos, force=5 * 240.)
 
 
