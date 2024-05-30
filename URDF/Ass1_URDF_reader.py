@@ -57,7 +57,7 @@ if __name__ == '__main__':
     d_homogeneous_t_matrices = {}
     t_matrix_bottom_row = np.array([0, 0, 0, 1])
 
-    np.set_printoptions(precision=4) #, suppress=True)
+    np.set_printoptions(precision=4, suppress=True)
 
     for joint in rJointIds:
         print("Transformation matrices for joint", index_to_joint_name.get(joint), "(joint ID:", joint, "):")
@@ -98,14 +98,14 @@ if __name__ == '__main__':
     print("\nInverse Kinematics:\n"
           "(note: configuration 0 = default configuration)")
 
-    #Store positions and orientations as lists
+    #Store target positions and orientations
     IK_target_pos = [linkStates[rJointIds[-1]][0], [0, 1, 0.3], [0, -1, 0.3], [0.7, -0.7, 0.7]]
     IK_target_orn = [p.getEulerFromQuaternion(linkStates[rJointIds[-1]][1]),
                     [0.3927, 0.7854, -0.3927],
                     [0.3927, 0.7854, 0.3927],
                     [2.3562, -0.7854, -0.7854]]
-    IK_joint_pos = []
 
+    IK_joint_pos = []
     for i in range(len(IK_target_pos)):
         print(f"\nTarget configuration {i}:\n"
               f"  xyz position (m) = {IK_target_pos[i]}, \n"
@@ -116,42 +116,74 @@ if __name__ == '__main__':
         for j in range(len(rJointIds)):
             print(f"  Joint {rJointIds[j]}, {index_to_joint_name.get(rJointIds[j])} angle = {IK_joint_pos[i][j]} radians")
 
+    ####################################################################################################################
+    # Assignment 2.4: Find the Velocity Jacobian matrix for 2 different joint configurations,
+    # one of them should be a singularity configuration
+    print("\nVelocity Kinematics (Jacobian):\n"
+          "(note: configuration 0 = default configuration)")
+
+    VK_joint_pos = [IK_joint_pos[0], [0, 1.5707963267948966, 0, -1.448623, 0, -0.7853981633974483, 0]]
+    zero_vec = [0.0]*len(rJointIds)
+
+    #variables to store jacobians
+    t_jac_np = []
+    r_jac_np = []
+
+    #joint_velocities_zeros = np.zeros((len(rJointIds), 1))
+    joint_velocities_ones = np.ones((len(rJointIds), 1))
+
+    ee_velocities_one = []
+
+    for pos in range(len(VK_joint_pos)):
+        print("\nJoint angles for configuration", pos, ":\n", VK_joint_pos[pos])
+        tran_Jacobian, rot_Jacobian = p.calculateJacobian(fr3_robot, rJointIds[-2], linkStates[rJointIds[-2]][2],
+                                                      VK_joint_pos[pos], zero_vec, zero_vec)
+
+        t_jac_np.append(np.array(tran_Jacobian))
+        r_jac_np.append(np.array(rot_Jacobian))
+
+        print("Translational Jacobian Matrix [J] for configuration", pos, ":\n", t_jac_np[pos])
+        print("Jacobian Matrix Rank =", np.linalg.matrix_rank(t_jac_np[pos]))
+
+
+        #print("Rotational Jacobian Matrix for configuration", pos, ":\n", r_jac_np[pos])
+
+        ee_velocities_one.append(np.dot(t_jac_np[pos], joint_velocities_ones))
+
+        print(f"Resulting xyz velocity vector (m/s) of link {rJointIds[-2]}, {index_to_link_name.get(rJointIds[-2])}:\n"
+              f"when all joints have an angular velocity of 1 rad/s:\n", ee_velocities_one[pos])
+
+
+    ####################################################################################################################
+    #Simulation Loop
 
     # #for printing link info in simulation
     stepcount = 0
     posecount = 0
-    # testLink = 23
 
     while True:
         p.stepSimulation()
 
-        for i in range(len(paramIds)):
-            c = paramIds[i]
-            # targetPos = p.readUserDebugParameter(c)
-            targetPos = IK_joint_pos[3][c]  # moves to IK position
-            p.setJointMotorControl2(fr3_robot, rJointIds[i], p.POSITION_CONTROL, targetPos, force=5 * 240.)
-
         # cycle through inverse kinematics poses
-        # stepcount += 1
-        # if posecount < len(IK_target_pos):
-        #
-        #     for i in range(len(paramIds)):
-        #         c = paramIds[i]
-        #         # targetPos = p.readUserDebugParameter(c)
-        #         targetPos = IK_joint_pos[posecount][c]  # moves to IK position
-        #         p.setJointMotorControl2(fr3_robot, rJointIds[i], p.POSITION_CONTROL, targetPos, force=5 * 240.)
-        #
-        #     if stepcount == 500:
-        #         posecount += 1
-        #
-        #         stepcount = 0
-        # else:
-        #
-        #     #manual
-        #     for i in range(len(paramIds)):
-        #         c = paramIds[i]
-        #         targetPos = p.readUserDebugParameter(c)
-        #         p.setJointMotorControl2(fr3_robot, rJointIds[i], p.POSITION_CONTROL, targetPos, force=5 * 240.)
+        stepcount += 1
+        if posecount < len(IK_target_pos):
+
+            for i in range(len(paramIds)):
+                c = paramIds[i]
+                targetPos = IK_joint_pos[posecount][c]  # moves to IK position
+                p.setJointMotorControl2(fr3_robot, rJointIds[i], p.POSITION_CONTROL, targetPos, force=5 * 240.)
+
+            if stepcount == 500:
+                posecount += 1
+
+                stepcount = 0
+        else:
+
+            #manual posing
+            for i in range(len(paramIds)):
+                c = paramIds[i]
+                targetPos = p.readUserDebugParameter(c)
+                p.setJointMotorControl2(fr3_robot, rJointIds[i], p.POSITION_CONTROL, targetPos, force=5 * 240.)
 
 
 
