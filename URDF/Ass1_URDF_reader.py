@@ -9,8 +9,8 @@ project_folder = Path("/home/userfs/r/rh1937/Kinematic_Assignment/MDaK/URDF/")
 fr3_urdf_file = project_folder / "MDaK_assignment_1.urdf"
 
 if __name__ == '__main__':
-    physicsClient = p.connect(p.GUI)#or p.DIRECT for non-graphical version
-    p.setAdditionalSearchPath(pybullet_data.getDataPath()) #optionally
+    physicsClient = p.connect(p.GUI)
+    p.setAdditionalSearchPath(pybullet_data.getDataPath())
     p.setGravity(0, 0, -9.81)
     planeId = p.loadURDF("plane.urdf")
     fr3_robot = p.loadURDF(str(fr3_urdf_file.absolute()), [0,0,0])
@@ -33,30 +33,24 @@ if __name__ == '__main__':
         linkName = info[12].decode('UTF-8')
         if (jointType == p.JOINT_REVOLUTE):
             rJointIds.append(j)
-            #link_name_to_index[linkName] = j
             index_to_link_name[j] = [linkName]
-            #joint_name_to_index[jointName] = j
             index_to_joint_name[j] = jointName
 
             #set up joint control sliders
             paramIds.append(p.addUserDebugParameter(jointName, info[8], info[9], 0))
 
     print("revolute joint IDs:", rJointIds)
-    #print("associated joint names:", joint_name_to_index)
     print("associated joint names: ", index_to_joint_name)
-    #print("associated link names:", link_name_to_index)
     print("associated link names:", index_to_link_name)
-
-
-    linkStates = p.getLinkStates(fr3_robot, list(range(num_joints)), computeLinkVelocity=0, computeForwardKinematics=1)
-    for i in rJointIds:
-        print("link id =", i, "worldPos =", linkStates[i][0], "worldOrn =", p.getEulerFromQuaternion(linkStates[i][1]),
-              #"locInertialPos =", linkStates[i][2], "locInertialOrn =", p.getEulerFromQuaternion(linkStates[i][3]),
-              "worldLinkFramePos=", linkStates[i][4], "worldLinkFrameOrn=", p.getEulerFromQuaternion(linkStates[i][5]))
-
 
     ####################################################################################################################
     # Assignment 2.1: Homogeneous Transform Matrices to the base frame for each joint
+
+    linkStates = p.getLinkStates(fr3_robot, list(range(num_joints)), computeLinkVelocity=0, computeForwardKinematics=1)
+    # for i in rJointIds:
+    #     print("link id =", i, "worldPos =", linkStates[i][0], "worldOrn =", p.getEulerFromQuaternion(linkStates[i][1]),
+    #           # "locInertialPos =", linkStates[i][2], "locInertialOrn =", p.getEulerFromQuaternion(linkStates[i][3]),
+    #           "worldLinkFramePos=", linkStates[i][4], "worldLinkFrameOrn=", p.getEulerFromQuaternion(linkStates[i][5]))
 
     d_rotation_matrices = {}
     d_position_matrices = {}
@@ -101,66 +95,66 @@ if __name__ == '__main__':
     # Assignment 2.3: Compute for 2 different end-effector configurations the corresponding joint angles (Inverse Kinematics)
     # End effector link: 23: ['arm_link_7a']
 
-    print("\nInverse Kinematics:")
+    print("\nInverse Kinematics:\n"
+          "(note: configuration 0 = default configuration)")
 
-    #to store positions and orientations as lists
-    IK_target_pos = []
-    IK_target_orn = []
+    #Store positions and orientations as lists
+    IK_target_pos = [linkStates[rJointIds[-1]][0], [0, 1, 0.3], [0, -1, 0.3], [0.7, -0.7, 0.7]]
+    IK_target_orn = [p.getEulerFromQuaternion(linkStates[rJointIds[-1]][1]),
+                    [0.3927, 0.7854, -0.3927],
+                    [0.3927, 0.7854, 0.3927],
+                    [2.3562, -0.7854, -0.7854]]
     IK_joint_pos = []
 
-    # Target Configuration 1: Default
-    print("Target configuration 1 (Default): position (m) = [0.594, 0, 0.686], orientation (rad) = [0, 0, 0, 0]")
-    IK_target_pos.append(linkStates[rJointIds[-1]][0])
-    IK_target_orn.append(linkStates[rJointIds[-1]][1])
-    IK_joint_pos.append(p.calculateInverseKinematics(fr3_robot, rJointIds[-1], IK_target_pos[0],
-                                                 IK_target_orn[0]))
-    print("Joint positions for default configuration:", IK_joint_pos[0])
-
-    # Target Configuration 2: position (m): [0, 1, 0.3], orientation (rad): [pi/8, pi/4, -pi/8]
-    print("Target configuration 2 : position (m): [0, 1, 0.3], orientation (rad): [0.3927, 0.7854, -0.3927]")
-    IK_target_pos.append([0, 1, 0.3])
-    IK_target_orn.append(p.getQuaternionFromEuler([0.3927, 0.7854, -0.3927]))
-    IK_joint_pos.append(p.calculateInverseKinematics(fr3_robot, rJointIds[-1], IK_target_pos[1],
-                                                     IK_target_orn[1]))
-    print("Joint positions for configuration 2:", IK_joint_pos[1])
-
-
-
-
-
-
-
-
-
-
-
+    for i in range(len(IK_target_pos)):
+        print(f"\nTarget configuration {i}:\n"
+              f"  xyz position (m) = {IK_target_pos[i]}, \n"
+              f"  xyz orientation (rad) = {IK_target_orn[i]}")
+        IK_joint_pos.append(p.calculateInverseKinematics(fr3_robot, rJointIds[-1], IK_target_pos[i],
+                                                         p.getQuaternionFromEuler(IK_target_orn[i])))
+        print(f"Joint positions for configuration {i}:")
+        for j in range(len(rJointIds)):
+            print(f"  Joint {rJointIds[j]}, {index_to_joint_name.get(rJointIds[j])} angle = {IK_joint_pos[i][j]} radians")
 
 
     # #for printing link info in simulation
-    # stepcount = 0
+    stepcount = 0
+    posecount = 0
     # testLink = 23
 
     while True:
         p.stepSimulation()
 
-# For forward kinematics
-        # stepcount += 1
-        # if stepcount == 500:
-        #     linkStates = p.getLinkStates(fr3_robot, list(range(num_joints)), computeLinkVelocity=0,
-        #                                  computeForwardKinematics=1)
-        #     print("link id =", testLink, "worldPos =", linkStates[testLink][0], "worldOrn =",
-        #           p.getMatrixFromQuaternion(linkStates[testLink][1]),
-        #           # "locInertialPos =", linkStates[testLink][2], "locInertialOrn =", p.getEulerFromQuaternion(linkStates[testLink][3]),
-        #           "worldLinkFramePos=", linkStates[testLink][4], "worldLinkFrameOrn=",
-        #           p.getMatrixFromQuaternion(linkStates[testLink][5]))
-        #     stepcount = 0
-
-
         for i in range(len(paramIds)):
             c = paramIds[i]
             # targetPos = p.readUserDebugParameter(c)
-            targetPos = IK_joint_pos[1][c] #moves to IK position
+            targetPos = IK_joint_pos[3][c]  # moves to IK position
             p.setJointMotorControl2(fr3_robot, rJointIds[i], p.POSITION_CONTROL, targetPos, force=5 * 240.)
+
+        # cycle through inverse kinematics poses
+        # stepcount += 1
+        # if posecount < len(IK_target_pos):
+        #
+        #     for i in range(len(paramIds)):
+        #         c = paramIds[i]
+        #         # targetPos = p.readUserDebugParameter(c)
+        #         targetPos = IK_joint_pos[posecount][c]  # moves to IK position
+        #         p.setJointMotorControl2(fr3_robot, rJointIds[i], p.POSITION_CONTROL, targetPos, force=5 * 240.)
+        #
+        #     if stepcount == 500:
+        #         posecount += 1
+        #
+        #         stepcount = 0
+        # else:
+        #
+        #     #manual
+        #     for i in range(len(paramIds)):
+        #         c = paramIds[i]
+        #         targetPos = p.readUserDebugParameter(c)
+        #         p.setJointMotorControl2(fr3_robot, rJointIds[i], p.POSITION_CONTROL, targetPos, force=5 * 240.)
+
+
+
 
 
         time.sleep(1./240.)
