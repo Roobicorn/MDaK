@@ -7,7 +7,7 @@ import numpy as np
 #Change project_folder file path to local path to run on local machine
 #you may need to add the character 'r' before the filepath e.g. Path(r"filepath")
 project_folder = Path("/home/userfs/r/rh1937/Kinematic_Assignment/MDaK/URDF/")
-fr3_urdf_file = project_folder / "MDaK_assignment_1.urdf"
+fr3_urdf_file = project_folder / "Ass1_FR3_robot.urdf"
 
 if __name__ == '__main__':
     physicsClient = p.connect(p.GUI)
@@ -168,15 +168,13 @@ if __name__ == '__main__':
         # cycle through inverse kinematics poses
         stepcount += 1
         if posecount < len(IK_target_pos):
-
             for i in range(len(paramIds)):
                 c = paramIds[i]
                 targetPos = IK_joint_pos[posecount][c]  # moves to IK position
                 p.setJointMotorControl2(fr3_robot, rJointIds[i], p.POSITION_CONTROL, targetPos, force=5 * 240.)
 
-            if stepcount == 500:
+            if stepcount == 250:
                 posecount += 1
-
                 stepcount = 0
         else:
 
