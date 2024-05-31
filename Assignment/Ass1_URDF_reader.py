@@ -4,7 +4,8 @@ import pybullet_data
 from pathlib import Path
 import numpy as np
 
-#Change project folder file path to run on local machine
+#Change project_folder file path to local path to run on local machine
+#you may need to add the character 'r' before the filepath e.g. Path(r"filepath")
 project_folder = Path("/home/userfs/r/rh1937/Kinematic_Assignment/MDaK/URDF/")
 fr3_urdf_file = project_folder / "MDaK_assignment_1.urdf"
 

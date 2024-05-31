@@ -4,7 +4,8 @@ import pybullet_data
 import subprocess
 from pathlib import Path
 
-#Change project folder file path to run on local machine
+#Change project_folder file path to local path to run on local machine
+#you may need to add the character 'r' before the filepath e.g. Path(r"filepath")
 project_folder = Path("/home/userfs/r/rh1937/Kinematic_Assignment/MDaK/URDF/")
 pool_bot_file = project_folder / "pool_bot.urdf"
 ball_white_file = project_folder / "ball_white.urdf"
