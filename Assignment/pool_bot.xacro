@@ -1,6 +1,28 @@
 <?xml version="1.0"?>
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="pool_table">
-  
+
+  <!-- Define Materials -->
+  <material name="black">
+    <color rgba="0 0 0 1"/>
+  </material>
+
+  <material name="grey">
+    <color rgba="0.75 0.75 0.75 1"/>
+  </material>
+
+  <material name="white">
+    <color rgba="1 1 1 1"/>
+  </material>
+
+  <material name="brown">
+    <color rgba="0.56 0.32 0.12 1"/>
+  </material>
+
+  <material name="green">
+    <color rgba="0 0.5 0 1"/>
+  </material>
+
+  <!-- Table -->
   <!-- Define Parameters -->
   <xacro:property name="table_leg_radius" value="0.075"/>
   <xacro:property name="table_leg_length" value="0.5"/>
@@ -33,27 +55,45 @@
       </collision> 
     </link>
   </xacro:macro>
-  
-    
-  <!-- Define Materials -->
-  <material name="black">
-    <color rgba="0 0 0 1"/>
-  </material>
 
-  <material name="white">
-    <color rgba="1 1 1 1"/>
-  </material>
+  <!-- Define macro for table edges -->
+  <xacro:macro name="table_end" params="name">
+    <link name="table_end_${name}">
+      <visual>
+        <geometry>
+          <box size="${table_outer_width} ${(table_outer_length-table_inner_length)/2} ${table_outer_height-table_inner_height}"/>
+        </geometry>
+        <origin xyz="0 0 ${(table_outer_height-table_inner_height)/2}"/>
+        <material name="green"/>
+      </visual>
+      <collision>
+        <geometry>
+          <box size="${table_outer_width} ${(table_outer_length-table_inner_length)/2} ${table_outer_height-table_inner_height}"/>
+        </geometry>
+      </collision>
+      <origin xyz="0 0 ${(table_outer_height-table_inner_height)/2}"/>
+    </link>
+  </xacro:macro>
 
-  <material name="brown">
-    <color rgba="0.56 0.32 0.12 1"/>
-  </material>
-
-  <material name="green">
-    <color rgba="0 0.5 0 1"/>
-  </material>
+    <xacro:macro name="table_side" params="name">
+    <link name="table_side_${name}">
+      <visual>
+        <geometry>
+          <box size="${(table_outer_width-table_inner_width)/2} ${table_inner_length} ${table_outer_height-table_inner_height}"/>
+        </geometry>
+        <origin xyz="0 0 ${(table_outer_height-table_inner_height)/2}"/>
+        <material name="green"/>
+      </visual>
+      <collision>
+        <geometry>
+          <box size="${(table_outer_width-table_inner_width)/2} ${table_inner_length} ${table_outer_height-table_inner_height}"/>
+        </geometry>
+      </collision>
+      <origin xyz="0 0 ${(table_outer_height-table_inner_height)/2}"/>
+    </link>
+  </xacro:macro>
 
   <!-- Define links and joints -->
-
   <link name="world">
   </link>
 
@@ -77,8 +117,6 @@
     <child link="tabletop"/>
     <origin xyz="0 0 ${table_leg_length}"/>
   </joint>
-
-  <!-- table_frame_ends, table_frame_sides -->
 
   <xacro:table_leg name="FL"/>
   <xacro:table_leg name="BL"/>
@@ -105,6 +143,194 @@
     <child link="table_leg_BR"/>
     <origin xyz="${-table_inner_width/2} ${-table_inner_length/2} 0"/>
   </joint>
+
+  <xacro:table_end name="F"/>
+  <xacro:table_end name="B"/>
+  <xacro:table_side name="L"/>
+  <xacro:table_side name="R"/>
+
+  <joint name="table_end_F_to_tabletop" type="fixed">
+    <parent link="tabletop"/>
+    <child link="table_end_F"/>
+    <origin xyz="0 -${(table_outer_length-(table_outer_length-table_inner_length)/2)/2} ${tabletop_inner_height}"/>
+  </joint>
+  <joint name="table_end_B_to_tabletop" type="fixed">
+    <parent link="tabletop"/>
+    <child link="table_end_B"/>
+    <origin xyz="0 ${(table_outer_length-(table_outer_length-table_inner_length)/2)/2} ${tabletop_inner_height}"/>
+  </joint>
+  <joint name="table_side_L_to_tabletop" type="fixed">
+    <parent link="tabletop"/>
+    <child link="table_side_L"/>
+    <origin xyz="-${(table_outer_width-(table_outer_width-table_inner_width)/2)/2} 0 ${tabletop_inner_height}"/>
+  </joint>
+  <joint name="table_side_R_to_tabletop" type="fixed">
+    <parent link="tabletop"/>
+    <child link="table_side_R"/>
+    <origin xyz="${(table_outer_width-(table_outer_width-table_inner_width)/2)/2} 0 ${tabletop_inner_height}"/>
+  </joint>
+
+  <!-- Robot -->
+  <!-- Define Parameters for robot -->
+  <!-- Define Parameters -->
+  <xacro:property name="bot_leg_width" value="0.05"/>
+  <xacro:property name="bot_leg_height" value="0.15"/>
+  <xacro:property name="bot_length" value="${table_outer_length-bot_leg_width}"/>
+  <xacro:property name="bot_width" value="${table_outer_width-bot_leg_width}"/>
+
+  <!-- Define Macros for robot -->
+
+
+  <xacro:macro name="bot_leg" params="name">
+    <link name="bot_leg_${name}">
+      <visual>
+        <geometry>
+          <box size="${bot_leg_width} ${bot_leg_width} ${bot_leg_height}"/>
+        </geometry>
+        <origin xyz="0 0 0.075"/>
+        <material name="grey"/>
+      </visual>
+      <collision>
+        <geometry>
+          <box size="${bot_leg_width} ${bot_leg_width} ${bot_leg_height}"/>
+        </geometry>
+        <origin xyz="0 0 ${bot_leg_height/2}"/>
+      </collision>
+    </link>
+  </xacro:macro>
+
+    <xacro:macro name="rail_l" params="name">
+    <link name="rail_l_${name}">
+      <visual>
+        <geometry>
+          <box size="${bot_leg_width} ${bot_length-bot_leg_width} ${bot_leg_width}"/>
+        </geometry>
+        <origin xyz="0 0 -${bot_leg_width/2}"/>
+        <material name="grey"/>
+      </visual>
+      <collision>
+        <geometry>
+          <box size="${bot_leg_width} ${bot_length-bot_leg_width} ${bot_leg_width}"/>
+        </geometry>
+        <origin xyz="0 0 -${bot_leg_width/2}"/>
+      </collision>
+    </link>
+  </xacro:macro>
+
+  <!-- Define Links and Joints for robot -->
+  <xacro:bot_leg name="FL"/>
+  <xacro:bot_leg name="BL"/>
+  <xacro:bot_leg name="FR"/>
+  <xacro:bot_leg name="BR"/>
+
+  <joint name="bot_leg_FL_to_tabletop" type="fixed">
+    <parent link="tabletop"/>
+    <child link="bot_leg_FL"/>
+    <origin xyz="${bot_width/2} ${(bot_length)/2} ${tabletop_outer_height}"/>
+  </joint>
+    <joint name="bot_leg_BL_to_tabletop" type="fixed">
+    <parent link="tabletop"/>
+    <child link="bot_leg_BL"/>
+    <origin xyz="-${bot_width/2} ${(bot_length)/2} ${tabletop_outer_height}"/>
+  </joint>
+  <joint name="bot_leg_FR_to_tabletop" type="fixed">
+    <parent link="tabletop"/>
+    <child link="bot_leg_FR"/>
+    <origin xyz="${bot_width/2} -${(bot_length)/2} ${tabletop_outer_height}"/>
+  </joint>
+  <joint name="bot_leg_BR_to_tabletop" type="fixed">
+    <parent link="tabletop"/>
+    <child link="bot_leg_BR"/>
+    <origin xyz="-${bot_width/2} -${(bot_length)/2} ${tabletop_outer_height}"/>
+  </joint>
+
+  <xacro:rail_l name="F"/>
+  <xacro:rail_l name="B"/>
+
+  <joint name="rail_l_F_to_bot_leg_FL" type="fixed">
+    <parent link="bot_leg_FL"/>
+    <child link="rail_l_F"/>
+    <origin xyz="0 -${bot_length/2} ${bot_leg_height}"/>
+  </joint>
+  <joint name="rail_l_B_to_bot_leg_BL" type="fixed">
+    <parent link="bot_leg_BL"/>
+    <child link="rail_l_B"/>
+    <origin xyz="0 -${bot_length/2} ${bot_leg_height}"/>
+  </joint>
+
+  <link name="rail_w">
+    <visual>
+      <geometry>
+        <box size="${bot_width-bot_leg_width} ${bot_leg_width} ${bot_leg_width}"/>
+      </geometry>
+      <origin xyz="0 0 -${bot_leg_width/2}"/>
+      <material name="grey"/>
+    </visual>
+    <collision>
+      <geometry>
+        <box size="${bot_width-bot_leg_width} ${bot_leg_width} ${bot_leg_width}"/>
+      </geometry>
+      <origin xyz="0 0 -${bot_leg_width/2}"/>
+    </collision>
+  </link>
+  <joint name="rail_w_to_rail_l_F" type="prismatic">
+    <parent link="rail_l_F"/>
+    <child link="rail_w"/>
+    <origin xyz="-${(bot_width)/2} 0 0"/>
+    <limit effort="1000.0" lower="-${(bot_length-bot_leg_width)/2}" upper="${(bot_length-bot_leg_width)/2}" velocity="5"/>
+    <axis xyz="0 1 0"/>
+  </joint>
+
+  <link name="head">
+    <visual>
+      <geometry>
+        <box size="0.1 .1 .1"/>
+      </geometry>
+      <origin xyz="0 0 0"/>
+      <material name="grey"/>
+    </visual>
+    <collision>
+      <geometry>
+        <box size="0.1 .1 .2"/>
+      </geometry>
+      <origin xyz="0 0 0"/>
+    </collision>
+  </link>
+  <joint name="head_to_rail_w" type="prismatic">
+    <parent link="rail_w"/>
+    <child link="head"/>
+    <origin xyz="0 ${bot_leg_width} 0"/>
+    <axis xyz="1 0 0"/>
+    <limit effort="1000.0" lower="-${(bot_width/2)-bot_leg_width}" upper="${(bot_width/2)-bot_leg_width}" velocity="5"/>
+  </joint>
+
+  <link name="rail_z">
+    <visual>
+      <geometry>
+        <box size="${bot_leg_width} ${bot_leg_width} .2"/>
+      </geometry>
+      <origin xyz="0 0 0.1"/>
+      <material name="grey"/>
+    </visual>
+    <collision>
+       <geometry>
+        <box size="${bot_leg_width} ${bot_leg_width} .2"/>
+      </geometry>
+      <origin xyz="0 0 0.1"/>
+    </collision>
+  </link>
+  <joint name="rail_z_to_head" type="prismatic">
+    <parent link="head"/>
+    <child link="rail_z"/>
+    <origin xyz="0 0 -0.1"/>
+    <axis xyz="0 0 -1"/>
+    <limit effort="1000.0" lower="0" upper="0.1" velocity="5"/>
+  </joint>
+
+
+
+
+
 
 
 

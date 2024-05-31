@@ -7,27 +7,21 @@ from pathlib import Path
 #Change project folder file path to run on local machine
 project_folder = Path("/home/userfs/r/rh1937/Kinematic_Assignment/MDaK/URDF/")
 pool_bot_file = project_folder / "pool_bot.urdf"
+ball_white_file = project_folder / "ball_white.urdf"
+ball_red_file = project_folder / "ball_red.urdf"
 
 if __name__ == '__main__':
     physicsClient = p.connect(p.GUI)#or p.DIRECT for non-graphical version
     p.setAdditionalSearchPath(pybullet_data.getDataPath()) #optionally
     p.setGravity(0, 0, -9.81)
     planeId = p.loadURDF("plane.urdf")
+
     #Load Table & Balls URDFs
-
-    # Code to automate converting xacro file to URDF.
-    # Not currently working, manually convert files in terminal.
-    # xacro_file = "/home/userfs/r/rh1937/Kinematic_Assignment/MDaK/URDF/pool_bot.xacro"
-    # urdf_file = "/home/userfs/r/rh1937/Kinematic_Assignment/MDaK/URDF/pool_bot.urdf"
-    # subprocess.run(['xacro', xacro_file, '>', urdf_file])
-
     pool_bot = p.loadURDF(str(pool_bot_file.absolute()), [0,0,0])
-    # You can also specify the position and orientation by
-    #------------------------------------------------------------------------
-    # startPos = [0,0,1]
-    # startOrientation = p.getQuaternionFromEuler([0,0,0])
-    # boxId = p.loadURDF("example.urdf",startPos, startOrientation)
-    #------------------------------------------------------------------------
+    ball_white = p.loadURDF(str(ball_white_file.absolute()), [0, 0.4, 0.8])
+    ball_red = p.loadURDF(str(ball_red_file.absolute()), [0, -0.4, 0.8])
+
+
 
     #Joint controllers (from xarm.py example)
     jointIds = []
@@ -39,10 +33,12 @@ if __name__ == '__main__':
         # print(info)
         jointName = info[1]
         jointType = info[2]
+        jointLLim = info[8]
+        jointULim = info[9]
 
         if (jointType == p.JOINT_PRISMATIC or jointType == p.JOINT_REVOLUTE):
             jointIds.append(j)
-            paramIds.append(p.addUserDebugParameter(jointName.decode("utf-8"), -4, 4, 0))
+            paramIds.append(p.addUserDebugParameter(jointName.decode("utf-8"), jointLLim, jointULim, 0))
 
 
 

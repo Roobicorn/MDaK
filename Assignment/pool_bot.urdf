@@ -8,11 +8,17 @@
   <material name="black">
     <color rgba="0 0 0 1"/>
   </material>
+  <material name="grey">
+    <color rgba="0.75 0.75 0.75 1"/>
+  </material>
   <material name="white">
     <color rgba="1 1 1 1"/>
   </material>
   <material name="brown">
     <color rgba="0.56 0.32 0.12 1"/>
+  </material>
+  <material name="green">
+    <color rgba="0 0.5 0 1"/>
   </material>
   <!-- Define links and joints -->
   <link name="world">
@@ -23,7 +29,7 @@
         <box size="1.12 1.9 0.25"/>
       </geometry>
       <origin xyz="0 0 0.125"/>
-      <material name="brown"/>
+      <material name="green"/>
     </visual>
     <collision>
       <geometry>
@@ -116,6 +122,273 @@
     <parent link="tabletop"/>
     <child link="table_leg_BR"/>
     <origin xyz="-0.41 -0.8 0"/>
+  </joint>
+  <link name="table_end_F">
+    <visual>
+      <geometry>
+        <box size="1.12 0.1499999999999999 0.050000000000000044"/>
+      </geometry>
+      <origin xyz="0 0 0.025000000000000022"/>
+      <material name="green"/>
+    </visual>
+    <collision>
+      <geometry>
+        <box size="1.12 0.1499999999999999 0.050000000000000044"/>
+      </geometry>
+    </collision>
+    <origin xyz="0 0 0.025000000000000022"/>
+  </link>
+  <link name="table_end_B">
+    <visual>
+      <geometry>
+        <box size="1.12 0.1499999999999999 0.050000000000000044"/>
+      </geometry>
+      <origin xyz="0 0 0.025000000000000022"/>
+      <material name="green"/>
+    </visual>
+    <collision>
+      <geometry>
+        <box size="1.12 0.1499999999999999 0.050000000000000044"/>
+      </geometry>
+    </collision>
+    <origin xyz="0 0 0.025000000000000022"/>
+  </link>
+  <link name="table_side_L">
+    <visual>
+      <geometry>
+        <box size="0.15000000000000008 1.6 0.050000000000000044"/>
+      </geometry>
+      <origin xyz="0 0 0.025000000000000022"/>
+      <material name="green"/>
+    </visual>
+    <collision>
+      <geometry>
+        <box size="0.15000000000000008 1.6 0.050000000000000044"/>
+      </geometry>
+    </collision>
+    <origin xyz="0 0 0.025000000000000022"/>
+  </link>
+  <link name="table_side_R">
+    <visual>
+      <geometry>
+        <box size="0.15000000000000008 1.6 0.050000000000000044"/>
+      </geometry>
+      <origin xyz="0 0 0.025000000000000022"/>
+      <material name="green"/>
+    </visual>
+    <collision>
+      <geometry>
+        <box size="0.15000000000000008 1.6 0.050000000000000044"/>
+      </geometry>
+    </collision>
+    <origin xyz="0 0 0.025000000000000022"/>
+  </link>
+  <joint name="table_end_F_to_tabletop" type="fixed">
+    <parent link="tabletop"/>
+    <child link="table_end_F"/>
+    <origin xyz="0 -0.875 0.25"/>
+  </joint>
+  <joint name="table_end_B_to_tabletop" type="fixed">
+    <parent link="tabletop"/>
+    <child link="table_end_B"/>
+    <origin xyz="0 0.875 0.25"/>
+  </joint>
+  <joint name="table_side_L_to_tabletop" type="fixed">
+    <parent link="tabletop"/>
+    <child link="table_side_L"/>
+    <origin xyz="-0.485 0 0.25"/>
+  </joint>
+  <joint name="table_side_R_to_tabletop" type="fixed">
+    <parent link="tabletop"/>
+    <child link="table_side_R"/>
+    <origin xyz="0.485 0 0.25"/>
+  </joint>
+  <!-- Define Macros for robot -->
+  <link name="bot_leg_FL">
+    <visual>
+      <geometry>
+        <box size="0.05 0.05 0.15"/>
+      </geometry>
+      <origin xyz="0 0 0.075"/>
+      <material name="grey"/>
+    </visual>
+    <collision>
+      <geometry>
+        <box size="0.05 0.05 0.15"/>
+      </geometry>
+      <origin xyz="0 0 0.075"/>
+    </collision>
+  </link>
+  <link name="bot_leg_BL">
+    <visual>
+      <geometry>
+        <box size="0.05 0.05 0.15"/>
+      </geometry>
+      <origin xyz="0 0 0.075"/>
+      <material name="grey"/>
+    </visual>
+    <collision>
+      <geometry>
+        <box size="0.05 0.05 0.15"/>
+      </geometry>
+      <origin xyz="0 0 0.075"/>
+    </collision>
+  </link>
+  <link name="bot_leg_FR">
+    <visual>
+      <geometry>
+        <box size="0.05 0.05 0.15"/>
+      </geometry>
+      <origin xyz="0 0 0.075"/>
+      <material name="grey"/>
+    </visual>
+    <collision>
+      <geometry>
+        <box size="0.05 0.05 0.15"/>
+      </geometry>
+      <origin xyz="0 0 0.075"/>
+    </collision>
+  </link>
+  <link name="bot_leg_BR">
+    <visual>
+      <geometry>
+        <box size="0.05 0.05 0.15"/>
+      </geometry>
+      <origin xyz="0 0 0.075"/>
+      <material name="grey"/>
+    </visual>
+    <collision>
+      <geometry>
+        <box size="0.05 0.05 0.15"/>
+      </geometry>
+      <origin xyz="0 0 0.075"/>
+    </collision>
+  </link>
+  <joint name="bot_leg_FL_to_tabletop" type="fixed">
+    <parent link="tabletop"/>
+    <child link="bot_leg_FL"/>
+    <origin xyz="0.535 0.9249999999999999 0.30000000000000004"/>
+  </joint>
+  <joint name="bot_leg_BL_to_tabletop" type="fixed">
+    <parent link="tabletop"/>
+    <child link="bot_leg_BL"/>
+    <origin xyz="-0.535 0.9249999999999999 0.30000000000000004"/>
+  </joint>
+  <joint name="bot_leg_FR_to_tabletop" type="fixed">
+    <parent link="tabletop"/>
+    <child link="bot_leg_FR"/>
+    <origin xyz="0.535 -0.9249999999999999 0.30000000000000004"/>
+  </joint>
+  <joint name="bot_leg_BR_to_tabletop" type="fixed">
+    <parent link="tabletop"/>
+    <child link="bot_leg_BR"/>
+    <origin xyz="-0.535 -0.9249999999999999 0.30000000000000004"/>
+  </joint>
+  <link name="rail_l_F">
+    <visual>
+      <geometry>
+        <box size="0.05 1.7999999999999998 0.05"/>
+      </geometry>
+      <origin xyz="0 0 -0.025"/>
+      <material name="grey"/>
+    </visual>
+    <collision>
+      <geometry>
+        <box size="0.05 1.7999999999999998 0.05"/>
+      </geometry>
+      <origin xyz="0 0 -0.025"/>
+    </collision>
+  </link>
+  <link name="rail_l_B">
+    <visual>
+      <geometry>
+        <box size="0.05 1.7999999999999998 0.05"/>
+      </geometry>
+      <origin xyz="0 0 -0.025"/>
+      <material name="grey"/>
+    </visual>
+    <collision>
+      <geometry>
+        <box size="0.05 1.7999999999999998 0.05"/>
+      </geometry>
+      <origin xyz="0 0 -0.025"/>
+    </collision>
+  </link>
+  <joint name="rail_l_F_to_bot_leg_FL" type="fixed">
+    <parent link="bot_leg_FL"/>
+    <child link="rail_l_F"/>
+    <origin xyz="0 -0.9249999999999999 0.15"/>
+  </joint>
+  <joint name="rail_l_B_to_bot_leg_BL" type="fixed">
+    <parent link="bot_leg_BL"/>
+    <child link="rail_l_B"/>
+    <origin xyz="0 -0.9249999999999999 0.15"/>
+  </joint>
+  <link name="rail_w">
+    <visual>
+      <geometry>
+        <box size="1.02 0.05 0.05"/>
+      </geometry>
+      <origin xyz="0 0 -0.025"/>
+      <material name="grey"/>
+    </visual>
+    <collision>
+      <geometry>
+        <box size="1.02 0.05 0.05"/>
+      </geometry>
+      <origin xyz="0 0 -0.025"/>
+    </collision>
+  </link>
+  <joint name="rail_w_to_rail_l_F" type="prismatic">
+    <parent link="rail_l_F"/>
+    <child link="rail_w"/>
+    <origin xyz="-0.535 0 0"/>
+    <limit effort="1000.0" lower="-0.8999999999999999" upper="0.8999999999999999" velocity="5"/>
+    <axis xyz="0 1 0"/>
+  </joint>
+  <link name="head">
+    <visual>
+      <geometry>
+        <box size="0.1 .1 .1"/>
+      </geometry>
+      <origin xyz="0 0 0"/>
+      <material name="grey"/>
+    </visual>
+    <collision>
+      <geometry>
+        <box size="0.1 .1 .2"/>
+      </geometry>
+      <origin xyz="0 0 0"/>
+    </collision>
+  </link>
+  <joint name="head_to_rail_w" type="prismatic">
+    <parent link="rail_w"/>
+    <child link="head"/>
+    <origin xyz="0 0.05 0"/>
+    <axis xyz="1 0 0"/>
+    <limit effort="1000.0" lower="-0.48500000000000004" upper="0.48500000000000004" velocity="5"/>
+  </joint>
+  <link name="rail_z">
+    <visual>
+      <geometry>
+        <box size="0.05 0.05 .2"/>
+      </geometry>
+      <origin xyz="0 0 0.1"/>
+      <material name="grey"/>
+    </visual>
+    <collision>
+      <geometry>
+        <box size="0.05 0.05 .2"/>
+      </geometry>
+      <origin xyz="0 0 0.1"/>
+    </collision>
+  </link>
+  <joint name="rail_z_to_head" type="prismatic">
+    <parent link="head"/>
+    <child link="rail_z"/>
+    <origin xyz="0 0 -0.1"/>
+    <axis xyz="0 0 -1"/>
+    <limit effort="1000.0" lower="0" upper="0.1" velocity="5"/>
   </joint>
 </robot>
 
