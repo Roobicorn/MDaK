@@ -6,7 +6,7 @@ import numpy as np
 
 #Change project_folder file path to local path to run on local machine
 #you may need to add the character 'r' before the filepath e.g. Path(r"filepath")
-project_folder = Path("/home/userfs/r/rh1937/Kinematic_Assignment/MDaK/URDF/")
+project_folder = Path(r"C:\Users\irben\OneDrive\Documents\Education\Uni of York\Year 3 Modules\Mechanical Design and Kinematics\MDaK Assignment Github Repository\MDaK\Assignment")
 fr3_urdf_file = project_folder / "Ass1_FR3_robot.urdf"
 
 if __name__ == '__main__':
@@ -42,7 +42,7 @@ if __name__ == '__main__':
 
     print("revolute joint IDs:", rJointIds)
     print("associated joint names: ", index_to_joint_name)
-    print("associated link names:", index_to_link_name)
+    print("associated link names:", index_to_link_name, "\n")
 
     ####################################################################################################################
     # Assignment 2.1: Homogeneous Transform Matrices to the base frame for each joint
@@ -123,12 +123,15 @@ if __name__ == '__main__':
     print("\nVelocity Kinematics (Jacobian):\n"
           "(note: configuration 0 = default configuration)")
 
-    VK_joint_pos = [IK_joint_pos[0], [0, 1.5707963267948966, 0, -1.448623, 0, -0.7853981633974483, 0]]
+    VK_joint_pos = [IK_joint_pos[0], 
+                    IK_joint_pos[1],
+                    [0, 0, 0, 1.500983, 0, 0, 0]]
     zero_vec = [0.0]*len(rJointIds)
 
     #variables to store jacobians
     t_jac_np = []
     r_jac_np = []
+    jac_np = []
 
     #joint_velocities_zeros = np.zeros((len(rJointIds), 1))
     joint_velocities_ones = np.ones((len(rJointIds), 1))
@@ -143,15 +146,17 @@ if __name__ == '__main__':
         t_jac_np.append(np.array(tran_Jacobian))
         r_jac_np.append(np.array(rot_Jacobian))
 
-        print("Translational Jacobian Matrix [J] for configuration", pos, ":\n", t_jac_np[pos])
-        print("Jacobian Matrix Rank =", np.linalg.matrix_rank(t_jac_np[pos]))
+        print("\nTranslational Jacobian Matrix [Jv] for configuration", pos, ":\n", t_jac_np[pos])
+        print("\nRotational Jacobian Matrix [Jω] for configuration", pos, ":\n", r_jac_np[pos])
 
+        jac_np.append(np.vstack((t_jac_np[pos], r_jac_np[pos])))
+        print("\noverall Jacobian Matrix [J]=[[Jv],[Jω]] for configuration", pos, ":\n", jac_np[pos])
 
-        #print("Rotational Jacobian Matrix for configuration", pos, ":\n", r_jac_np[pos])
+        print("Jacobian Matrix Rank =", np.linalg.matrix_rank(jac_np[pos]))
 
-        ee_velocities_one.append(np.dot(t_jac_np[pos], joint_velocities_ones))
+        ee_velocities_one.append(np.dot(jac_np[pos], joint_velocities_ones))
 
-        print(f"Resulting xyz velocity vector (m/s) of link {rJointIds[-2]}, {index_to_link_name.get(rJointIds[-2])}:\n"
+        print(f"\nResulting xyz velocity vector (m/s) of link {rJointIds[-2]}, {index_to_link_name.get(rJointIds[-2])}:\n"
               f"when all joints have an angular velocity of 1 rad/s:\n", ee_velocities_one[pos])
 
 
